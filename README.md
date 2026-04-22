@@ -22,7 +22,7 @@ pip install mkdocs-material
 mkdocs serve
 ```
 
-Abrir en el navegador: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+Abrir en el navegador: [Manual](https://tomvalderrama.github.io/manual/)
 
 ### En línea
 
