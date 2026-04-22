@@ -23,6 +23,8 @@ plt.savefig('serie_viento.png', dpi=150)
 plt.show()
 ```
 
+![Serie temporal con título calculado](../img/serie_temporal.png)
+
 ## Figure y Axes — la estructura correcta
 
 Para figuras con múltiples paneles o más control, se trabaja directamente con objetos `Figure` y `Axes`:
@@ -59,6 +61,8 @@ axes[2].set_xlabel('Tiempo')
 
 fig.tight_layout()
 ```
+
+![Tres paneles con sharex](../img/subplots_paneles.png)
 
 ### subplot2grid — paneles de distinto tamaño
 
@@ -162,6 +166,8 @@ ax.set_ylabel('Profundidad (m)')
 ax.invert_yaxis()   # profundidad creciente hacia abajo
 ```
 
+![Heatmap de corrientes](../img/heatmap_corrientes.png)
+
 ## Guardar figuras
 
 ```python
@@ -189,6 +195,8 @@ with PdfPages('informe_figuras.pdf') as pdf:
 ## Figuras con valores calculados
 
 En análisis real, los títulos, etiquetas y leyendas deben mostrar valores del propio conjunto de datos — no texto fijo. Así la figura se documenta a sí misma.
+
+![Anotaciones y leyenda con valores calculados](../img/anotaciones_leyenda.png)
 
 ### Título y subtítulo con estadísticas
 

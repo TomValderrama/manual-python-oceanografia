@@ -1,6 +1,6 @@
 # Lectura de archivos
 
-Un pipeline de datos oceanográficos lee de múltiples fuentes y formatos: CSV del datalogger de viento, Excel de procesamiento, archivos `.mat` de MATLAB (STORM2), binarios del Nortek (`.prf`), y documentos Word para extracción de metadata.
+Un pipeline de datos científicos lee de múltiples fuentes y formatos: CSV de dataloggers, Excel de procesamiento, archivos `.mat` de MATLAB, y documentos Word para extracción de metadata.
 
 ## Archivos de texto y CSV
 
@@ -54,17 +54,17 @@ for nombre, df in hojas.items():
     print(f"Hoja '{nombre}': {df.shape}")
 ```
 
-### Leer varias hojas del Excel de procesamiento
+### Leer varias hojas de un Excel con múltiples pestañas
 
-En el pipeline de corrientes, el Excel de procesamiento tiene múltiples hojas con estadísticas, tablas de incidencia y vectores progresivos:
+Cuando el Excel tiene hojas con nombres conocidos, conviene leerlas en un diccionario y manejar el caso de que alguna falte:
 
 ```python
-hojas_requeridas = ['NOTAS', 'TABLAS_INCIDENCIA', 'UV', 'VECTOR_PROGRESIVO']
+hojas_requeridas = ['Datos', 'Estadisticas', 'Resumen']
 
 datos = {}
 for hoja in hojas_requeridas:
     try:
-        datos[hoja] = pd.read_excel(ruta_excel, sheet_name=hoja)
+        datos[hoja] = pd.read_excel('procesamiento.xlsx', sheet_name=hoja)
     except Exception as e:
         print(f"  ! No se encontró la hoja '{hoja}': {e}")
 ```
@@ -210,8 +210,8 @@ La librería `pathlib` ofrece una forma más moderna de trabajar con rutas:
 ```python
 from pathlib import Path
 
-carpeta = Path('/mnt/c/Users/Tomas/PELICANOS Dropbox/Proyectos2025')
-archivo = carpeta / 'Los Vilos' / 'corrientes.csv'
+carpeta = Path('/ruta/a/mis/datos')
+archivo = carpeta / 'campana_oct2025' / 'corrientes.csv'
 
 archivo.exists()        # True/False
 archivo.suffix          # '.csv'
@@ -227,7 +227,7 @@ list(carpeta.rglob('*.csv'))   # recursivo
 !!! warning "Rutas en Windows desde WSL"
     Al usar Python desde WSL (Windows Subsystem for Linux), las rutas de Windows se acceden como `/mnt/c/...`. Las rutas con espacios deben ir entre comillas o manejarse con `Path`:
     ```python
-    ruta = Path('/mnt/c/Users/Tomas/PELICANOS Dropbox/archivo.csv')
+    ruta = Path('/mnt/c/Users/Usuario/Mi Carpeta/archivo.csv')
     ```
 
 !!! tip "Spyder"

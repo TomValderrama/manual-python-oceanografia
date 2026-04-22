@@ -78,6 +78,8 @@ fc_high = 1 / (11 * 3600)
 marea_M2 = filtro_banda(df['velocidad'].dropna().values, fs, fc_low, fc_high)
 ```
 
+![Filtro Butterworth paso bajo — señal original vs filtrada](../img/filtro_butterworth.png)
+
 ## Interpolación de NaN
 
 ### Interpolación lineal con pandas

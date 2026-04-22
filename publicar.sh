@@ -5,8 +5,8 @@
 set -e
 
 bash generar_pdf.sh
-cp Python_de_Extremo_a_Extremo.pdf ../TomValderrama.github.io/manual/
 mkdocs build --site-dir ../TomValderrama.github.io/manual
+cp Python_de_Extremo_a_Extremo.pdf ../TomValderrama.github.io/manual/
 
 cd ../TomValderrama.github.io
 git add manual/
