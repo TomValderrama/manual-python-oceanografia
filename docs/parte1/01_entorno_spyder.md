@@ -100,8 +100,25 @@ pd.read_csv?
 Algunas opciones útiles en **Tools → Preferences**:
 
 - **Editor → mostrar números de línea**: facilita depuración
-- **IPython console → Graphics → Backend: Inline**: los gráficos aparecen en la consola
-- **IPython console → Graphics → Backend: Qt5**: los gráficos aparecen en ventana separada (más útil para revisar figuras en detalle)
+- **IPython console → Graphics → Backend: Inline**: los gráficos aparecen en la consola (recomendado para análisis)
+- **IPython console → Graphics → Backend: Tkinter**: cada gráfico abre en ventana separada, liviana e interactiva (zoom, pan, guardar)
+- **IPython console → Graphics → Backend: Qt5**: similar a Tkinter pero más pesado; en algunos equipos es lento o inestable
 
-!!! tip "Consejo"
-    Para análisis de datos oceanográficos conviene usar **Qt5** como backend gráfico: permite hacer zoom, guardar y redimensionar las figuras interactivamente.
+También se puede cambiar el backend por sesión desde la consola sin tocar las preferencias:
+
+```python
+%matplotlib inline   # figuras en consola
+%matplotlib tk       # ventana Tkinter interactiva
+%matplotlib qt5      # ventana Qt5
+```
+
+### Cuándo usar cada backend
+
+| Situación | Backend |
+|---|---|
+| Explorar datos, iterar rápido | Inline |
+| Revisar figura con zoom o hacer clics sobre ella | Tkinter |
+| Script automático que solo guarda PNG | `matplotlib.use('Agg')` antes de importar pyplot |
+
+!!! tip "Recomendación"
+    Usar **Inline** como predeterminado. Cambiar a **Tkinter** cuando se necesita interactividad (zoom, edición de puntos, inspector de coordenadas). Qt5 solo vale la pena si Tkinter falla o se necesitan widgets más complejos.

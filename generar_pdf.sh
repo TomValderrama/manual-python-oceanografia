@@ -39,6 +39,7 @@ pandoc "${ARCHIVOS[@]}" \
   --toc \
   --toc-depth=2 \
   --number-sections \
+  --include-in-header=pdf_header.tex \
   -V lang=es \
   -V geometry:margin=2.5cm \
   -V fontsize=11pt \

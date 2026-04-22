@@ -1,0 +1,13 @@
+% ── TOC: más espacio para números de sección anchos como "15.10" ──────────
+\usepackage{tocloft}
+\setlength{\cftsubsecnumwidth}{3.5em}
+\setlength{\cftsecnumwidth}{2.2em}
+
+% ── Código: cortar líneas largas en vez de salirse del margen ─────────────
+\usepackage{fvextra}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{%
+  breaklines,breakanywhere,commandchars=\\\{\}}
+
+% ── Cada sección H1 empieza en página nueva ───────────────────────────────
+\usepackage{titlesec}
+\newcommand{\sectionbreak}{\clearpage}

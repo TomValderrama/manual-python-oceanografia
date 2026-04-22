@@ -186,6 +186,124 @@ with PdfPages('informe_figuras.pdf') as pdf:
         plt.close(fig)
 ```
 
+## Figuras con valores calculados
+
+En análisis real, los títulos, etiquetas y leyendas deben mostrar valores del propio conjunto de datos — no texto fijo. Así la figura se documenta a sí misma.
+
+### Título y subtítulo con estadísticas
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+velocidad = np.array([1.2, 3.4, 2.1, 4.5, 0.8, 3.9, 2.7])
+
+fig, ax = plt.subplots(figsize=(10, 4))
+ax.plot(velocidad, color='steelblue', linewidth=1.2)
+
+# Calcular estadísticas para usar en el título
+v_media = velocidad.mean()
+v_max   = velocidad.max()
+n       = len(velocidad)
+
+ax.set_title(f'Serie temporal de velocidad  |  media={v_media:.2f} m/s  máx={v_max:.2f} m/s  n={n}')
+ax.set_xlabel('Muestra')
+ax.set_ylabel('Velocidad (m/s)')
+fig.tight_layout()
+```
+
+### Leyendas con valores calculados
+
+```python
+profundidades = [5, 10, 20]
+datos = {
+    5:  np.random.normal(2.5, 0.8, 186),
+    10: np.random.normal(1.8, 0.6, 186),
+    20: np.random.normal(0.9, 0.4, 186),
+}
+
+fig, ax = plt.subplots(figsize=(12, 4))
+
+for prof, serie in datos.items():
+    media = serie.mean()
+    # La etiqueta de la leyenda incluye el valor calculado
+    ax.plot(serie, label=f'{prof} m  (media={media:.2f} m/s)', linewidth=0.8)
+
+ax.set_xlabel('Tiempo (días)')
+ax.set_ylabel('Velocidad (m/s)')
+ax.legend(loc='upper right', fontsize=9)
+fig.tight_layout()
+```
+
+### Anotaciones sobre el gráfico
+
+```python
+fig, ax = plt.subplots(figsize=(10, 4))
+ax.plot(velocidad, color='steelblue', linewidth=1.2)
+
+# Marcar el máximo con una anotación
+idx_max = velocidad.argmax()
+v_max   = velocidad[idx_max]
+
+ax.annotate(
+    f'máx: {v_max:.2f} m/s',
+    xy=(idx_max, v_max),           # punto al que apunta la flecha
+    xytext=(idx_max + 0.5, v_max + 0.3),  # posición del texto
+    arrowprops=dict(arrowstyle='->', color='firebrick'),
+    fontsize=9, color='firebrick'
+)
+
+# Línea de referencia con su propio label
+umbral = 3.0
+ax.axhline(umbral, color='gray', linestyle='--', linewidth=0.8,
+           label=f'umbral operacional: {umbral} m/s')
+ax.legend(fontsize=9)
+fig.tight_layout()
+```
+
+### Texto estadístico dentro del panel
+
+```python
+fig, ax = plt.subplots(figsize=(10, 4))
+ax.plot(velocidad, color='steelblue')
+
+# Bloque de estadísticas en esquina del axes
+stats_texto = (
+    f"media = {velocidad.mean():.2f} m/s\n"
+    f"DE    = {velocidad.std():.2f} m/s\n"
+    f"máx   = {velocidad.max():.2f} m/s\n"
+    f"n     = {len(velocidad)}"
+)
+ax.text(
+    0.02, 0.97, stats_texto,
+    transform=ax.transAxes,       # coordenadas 0-1 relativas al panel
+    fontsize=8, verticalalignment='top',
+    fontfamily='monospace',
+    bbox=dict(boxstyle='round', facecolor='white', alpha=0.8)
+)
+fig.tight_layout()
+```
+
+### Título desde metadatos del archivo
+
+```python
+import pandas as pd
+
+df = pd.read_csv('corrientes_oct2025.csv', parse_dates=['fecha'])
+
+fecha_ini = df['fecha'].min().strftime('%d %b %Y')
+fecha_fin = df['fecha'].max().strftime('%d %b %Y')
+n_dias    = (df['fecha'].max() - df['fecha'].min()).days
+
+fig, ax = plt.subplots(figsize=(12, 4))
+ax.plot(df['fecha'], df['velocidad'], linewidth=0.8)
+ax.set_title(f'Velocidad de corriente — {fecha_ini} al {fecha_fin} ({n_dias} días)')
+ax.set_xlabel('Fecha')
+ax.set_ylabel('Velocidad (m/s)')
+fig.autofmt_xdate()   # rota etiquetas de fecha automáticamente
+fig.tight_layout()
+```
+
 ## Backend gráfico
 
 El backend controla cómo se muestran las figuras:

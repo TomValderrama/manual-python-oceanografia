@@ -4,28 +4,110 @@ Python es un lenguaje de tipado dinámico e indentado. No necesita declarar tipo
 
 ## Variables y tipos
 
+Python detecta el tipo de una variable automáticamente al asignarla. No es necesario declararlo. Los tipos fundamentales son:
+
+### float — número decimal
+
+Representa cualquier número con parte decimal. Internamente usa 64 bits (doble precisión), lo que da ~15 dígitos significativos de precisión.
+
 ```python
-# Números
-velocidad = 3.5          # float
-profundidad = 23         # int
-n_celdas = 12            # int
+velocidad   = 3.5       # float
+temperatura = -1.8      # float (puede ser negativo)
+proporcion  = 0.73      # float entre 0 y 1
 
-# Texto
-instrumento = "Nortek Aquadopp"
-unidad = 'm/s'
-
-# Booleano
-datos_validos = True
-
-# None (ausencia de valor)
-resultado = None
+type(velocidad)   # <class 'float'>
 ```
 
-Python detecta el tipo automáticamente. Se puede verificar con `type()`:
+Se usa para mediciones físicas: velocidades, temperaturas, coordenadas, profundidades. Cualquier número que pueda tener decimales debe ser float.
+
+!!! warning "Precisión de float"
+    Los floats tienen un error de representación inherente. `0.1 + 0.2` en Python da `0.30000000000000004`, no `0.3`. Esto rara vez afecta el análisis de datos, pero sí puede causar sorpresas en comparaciones exactas. Usar `round()` o `np.isclose()` en vez de `==` para comparar floats.
+
+### int — número entero
+
+Número sin parte decimal. En Python 3 no tiene límite de tamaño.
 
 ```python
-type(velocidad)   # <class 'float'>
-type(n_celdas)    # <class 'int'>
+n_muestras  = 186       # int
+profundidad = 7         # int (metros exactos)
+indice      = 0         # int — los índices siempre son int
+
+type(n_muestras)   # <class 'int'>
+```
+
+Se usa para contadores, índices, cantidades discretas (número de archivos, de celdas, de meses).
+
+```python
+# La división entre ints en Python 3 siempre da float
+7 / 2      # 3.5   (float)
+7 // 2     # 3     (int — división entera)
+7 % 2      # 1     (int — resto)
+```
+
+### str — texto
+
+Secuencia de caracteres. Se define con comillas simples o dobles (equivalentes).
+
+```python
+nombre_proyecto = "Los Vilos Oct 2025"
+unidad          = 'm/s'
+ruta            = r'C:\Users\Tomas\datos.csv'   # r"..." ignora las barras invertidas
+```
+
+### bool — booleano
+
+Solo dos valores posibles: `True` o `False`. Es un caso especial de int (`True == 1`, `False == 0`).
+
+```python
+datos_validos = True
+es_negativo   = velocidad < 0   # bool resultado de una comparación
+
+# Se usa en condiciones
+if datos_validos:
+    procesar(df)
+```
+
+### None — ausencia de valor
+
+Representa "sin valor". Equivalente a `NULL` en otras lenguas.
+
+```python
+resultado = None   # aún no calculado
+
+# Verificar si algo es None
+if resultado is None:
+    print("Aún no hay resultado")
+```
+
+### Resumen y conversión entre tipos
+
+```python
+# Verificar tipo
+type(3.5)     # <class 'float'>
+type(23)      # <class 'int'>
+type("texto") # <class 'str'>
+type(True)    # <class 'bool'>
+
+# Convertir
+int(3.9)      # 3     — trunca, no redondea
+float(23)     # 23.0
+str(186)      # '186'
+int("23")     # 23    — solo si el string es un número válido
+bool(0)       # False — 0 es falso, cualquier otro número es True
+bool("")      # False — string vacío es falso
+```
+
+### ¿Cuándo importa el tipo?
+
+```python
+# Concatenar string con número da error
+nombre = "Profundidad: " + 7          # TypeError
+nombre = "Profundidad: " + str(7)     # OK: "Profundidad: 7"
+nombre = f"Profundidad: {7}"          # OK con f-string (convierte automático)
+
+# Operaciones entre int y float dan float
+3 + 1.5    # 4.5 (float)
+7 * 2.0    # 14.0 (float)
 ```
 
 ## Strings (texto)
