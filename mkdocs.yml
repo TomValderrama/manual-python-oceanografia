@@ -1,0 +1,49 @@
+site_name: Manual de Python para Oceanografía
+site_description: Manual práctico de Python aplicado al procesamiento de datos oceanográficos
+site_author: Pelícanos Oceanografía
+theme:
+  name: material
+  language: es
+  palette:
+    primary: teal
+    accent: blue
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - content.code.copy
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+
+nav:
+  - Inicio: index.md
+  - Parte I — Fundamentos:
+    - parte1/01_entorno_spyder.md
+    - parte1/02_sintaxis.md
+    - parte1/03_control_flujo.md
+    - parte1/04_funciones_modulos.md
+  - Parte II — Manejo de datos:
+    - parte2/05_numpy.md
+    - parte2/06_pandas.md
+    - parte2/07_lectura_archivos.md
+  - Parte III — Visualización:
+    - parte3/08_matplotlib.md
+    - parte3/09_rosas_polares.md
+    - parte3/10_figuras_informes.md
+  - Parte IV — Análisis oceanográfico:
+    - parte4/11_estadisticas_circulares.md
+    - parte4/12_analisis_espectral.md
+    - parte4/13_filtros_interpolacion.md
+  - Parte V — Automatización de informes:
+    - parte5/14_python_docx.md
+    - parte5/15_plantillas_placeholders.md
+    - parte5/16_importacion_dinamica.md
+  - Parte VI — Datos geoespaciales:
+    - parte6/17_rasterio_geopandas.md
+    - parte6/18_coordenadas_mapas.md
