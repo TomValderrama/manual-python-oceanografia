@@ -1,6 +1,6 @@
-# Manual de Python para Oceanografía
+# Python de Extremo a Extremo
 
-Manual práctico de Python aplicado al procesamiento de datos oceanográficos, basado en el código real del pipeline de [Pelícanos Oceanografía](https://github.com/TomValderrama).
+Manual práctico de Python para automatización, análisis geoespacial y visión artificial, construido desde código real de análisis de datos.
 
 ## Contenidos
 
@@ -12,8 +12,12 @@ Manual práctico de Python aplicado al procesamiento de datos oceanográficos, b
 | **IV — Análisis oceanográfico** | Estadísticas circulares, análisis espectral (FFT), filtros |
 | **V — Automatización de informes** | python-docx, plantillas con placeholders, importación dinámica |
 | **VI — Datos geoespaciales** | Rasterio, GeoPandas, coordenadas y mapas base |
+| **VII — Visión artificial** | OCR de imágenes con OpenCV y Tesseract |
 
 ## Ver el manual
+
+- **Online**: [tomvalderrama.github.io/manual](https://tomvalderrama.github.io/manual/)
+- **PDF**: [Descargar](https://tomvalderrama.github.io/manual/Python_de_Extremo_a_Extremo.pdf)
 
 ### Localmente
 
@@ -22,14 +26,8 @@ pip install mkdocs-material
 mkdocs serve
 ```
 
-Abrir en el navegador: [Manual](https://tomvalderrama.github.io/manual/)
-
-### En línea
-
-Próximamente en GitHub Pages.
-
 ## Requisitos
 
 ```bash
-pip install numpy pandas matplotlib scipy openpyxl python-docx windrose rasterio geopandas pyproj contextily
+pip install numpy pandas matplotlib scipy openpyxl python-docx windrose rasterio geopandas pyproj contextily pytesseract opencv-python
 ```
