@@ -10,5 +10,5 @@ cp Python_de_Extremo_a_Extremo.pdf ../TomValderrama.github.io/manual/
 
 cd ../TomValderrama.github.io
 git add manual/
-git commit -m "Actualizar manual"
+git diff --staged --quiet || git commit -m "Actualizar manual"
 git push
