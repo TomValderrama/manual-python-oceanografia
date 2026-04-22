@@ -229,3 +229,6 @@ list(carpeta.rglob('*.csv'))   # recursivo
     ```python
     ruta = Path('/mnt/c/Users/Tomas/PELICANOS Dropbox/archivo.csv')
     ```
+
+!!! tip "Spyder"
+    `Ctrl + 1` comenta o descomenta la selección. `Ctrl + 2` inserta un separador de celda `# %%` en la posición del cursor.

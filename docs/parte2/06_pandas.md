@@ -215,3 +215,6 @@ df.to_excel('resultado.xlsx', sheet_name='Datos', index=False)
 
 !!! tip "Variable Explorer en Spyder"
     Hacer doble clic en un DataFrame en el Variable Explorer de Spyder abre una vista de tabla interactiva donde se pueden ordenar columnas y buscar valores, sin escribir ningún código adicional.
+
+!!! tip "Spyder"
+    `Ctrl + 1` comenta o descomenta la selección. `Ctrl + 2` inserta un separador de celda `# %%` en la posición del cursor.

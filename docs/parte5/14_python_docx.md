@@ -226,3 +226,6 @@ generar_informe(
 
 !!! warning "Estilos y plantilla"
     Los estilos de Word (Título 1, Normal, Tabla Grid) están definidos en la plantilla. Si se crea un documento desde cero con `Document()`, los estilos por defecto de python-docx son distintos a los del template corporativo. Siempre trabajar sobre la plantilla para conservar los estilos visuales del informe.
+
+!!! tip "Spyder"
+    `Ctrl + 1` comenta o descomenta la selección. `Ctrl + 2` inserta un separador de celda `# %%` en la posición del cursor.

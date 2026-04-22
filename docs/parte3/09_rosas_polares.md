@@ -177,3 +177,6 @@ fig.tight_layout()
 
 !!! tip "Convención de dirección"
     En meteorología la dirección indica **desde dónde** viene el viento (FROM). En oceanografía de corrientes, la convención es **hacia dónde** va (TO). Al graficar rosas, hay que tener claro cuál convención se está usando para que la rosa tenga sentido físico.
+
+!!! tip "Spyder"
+    `Ctrl + 1` comenta o descomenta la selección. `Ctrl + 2` inserta un separador de celda `# %%` en la posición del cursor.

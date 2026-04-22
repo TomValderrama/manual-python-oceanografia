@@ -166,3 +166,6 @@ def generar_informe_completo(ruta_plantilla, ruta_salida, meta, df_stats, figura
     doc.save(ruta_salida)
     print(f"Informe generado: {ruta_salida.name}")
 ```
+
+!!! tip "Spyder"
+    `Ctrl + 1` comenta o descomenta la selección. `Ctrl + 2` inserta un separador de celda `# %%` en la posición del cursor.

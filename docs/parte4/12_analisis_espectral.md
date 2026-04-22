@@ -175,3 +175,6 @@ fig.colorbar(im, ax=ax, label='log₁₀ PSD')
 
 !!! warning "Resolución espectral"
     La resolución frecuencial es `Δf = 1 / (N × dt)`. Series cortas tienen baja resolución y no pueden separar componentes de período similar (p. ej. M2 y S2, que difieren solo 0.42 h). Para estudios de marea se necesitan al menos 30 días de datos.
+
+!!! tip "Spyder"
+    `Ctrl + 1` comenta o descomenta la selección. `Ctrl + 2` inserta un separador de celda `# %%` en la posición del cursor.

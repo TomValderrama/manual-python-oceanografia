@@ -149,3 +149,6 @@ def histograma_direccional(direcciones_deg, n_sectores=16, titulo=''):
 
 !!! tip "Calma o datos faltantes"
     Cuando la velocidad es cero (calma), la dirección no tiene significado físico. Antes de calcular estadísticas circulares, filtrar los registros con velocidad inferior al umbral de arranque del instrumento (típicamente 0.02 m/s en correntómetros, 0.5 m/s en anemómetros).
+
+!!! tip "Spyder"
+    `Ctrl + 1` comenta o descomenta la selección. `Ctrl + 2` inserta un separador de celda `# %%` en la posición del cursor.

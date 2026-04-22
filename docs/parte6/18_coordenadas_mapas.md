@@ -206,3 +206,6 @@ for _, row in gdf_estaciones.iterrows():
 
 !!! tip "Selección del sistema de coordenadas"
     Para Chile, UTM zona 19 Sur (EPSG:32719) cubre desde 66°O hasta 60°O, incluyendo toda la costa continental. La zona 18 Sur (EPSG:32718) cubre desde 72°O hasta 66°O y es necesaria para el extremo sur y la región de Los Lagos. Verificar siempre que los datos de entrada estén en el CRS correcto antes de operar.
+
+!!! tip "Spyder"
+    `Ctrl + 1` comenta o descomenta la selección. `Ctrl + 2` inserta un separador de celda `# %%` en la posición del cursor.

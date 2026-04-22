@@ -36,6 +36,19 @@ Spyder tiene tres paneles principales:
 | Ejecutar una celda | `Ctrl + Enter` |
 | Ejecutar celda y avanzar | `Shift + Enter` |
 
+## Atajos de edición esenciales
+
+| Acción | Atajo |
+|--------|-------|
+| Comentar / descomentar selección | `Ctrl + 1` |
+| Insertar separador de celda `# %%` | `Ctrl + 2` |
+| Duplicar línea | `Ctrl + D` |
+| Mover línea arriba / abajo | `Alt + ↑ / ↓` |
+| Buscar en el archivo | `Ctrl + F` |
+| Ir a definición de función | `Ctrl + G` |
+
+`Ctrl + 1` es especialmente útil para desactivar temporalmente un bloque de código sin borrarlo. `Ctrl + 2` inserta un `# %%` en la posición del cursor, creando una nueva celda ejecutable en ese punto.
+
 ## Celdas de código
 
 Las celdas permiten dividir el script en bloques ejecutables de forma independiente, similar a un notebook pero dentro de un archivo `.py` normal.

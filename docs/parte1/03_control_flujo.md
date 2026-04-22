@@ -166,3 +166,6 @@ for prof, vel in zip(profundidades, velocidades):
 print(f"Velocidad máxima: {maxima} m/s a {prof_maxima} m de profundidad")
 # → Velocidad máxima: 0.6 m/s a 7 m de profundidad
 ```
+
+!!! tip "Spyder"
+    `Ctrl + 1` comenta o descomenta la selección. `Ctrl + 2` inserta un separador de celda `# %%` en la posición del cursor.

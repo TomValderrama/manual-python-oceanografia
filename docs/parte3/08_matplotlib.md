@@ -201,3 +201,6 @@ En Spyder se configura desde **Preferences → IPython console → Graphics → 
 
 !!! tip "plt.close() en scripts automáticos"
     Cuando un script genera decenas de figuras (como el autoinforme), es importante cerrar cada figura después de guardarla con `plt.close(fig)`. De lo contrario Matplotlib acumula todas en memoria y Spyder puede volverse lento o colapsar.
+
+!!! tip "Spyder"
+    `Ctrl + 1` comenta o descomenta la selección. `Ctrl + 2` inserta un separador de celda `# %%` en la posición del cursor.
