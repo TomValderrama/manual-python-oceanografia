@@ -6,6 +6,29 @@ NumPy es la librería fundamental para cálculo numérico en Python. Su estructu
 import numpy as np
 ```
 
+## Arrays vs listas de Python
+
+La pregunta más común al empezar con NumPy es: ¿cuándo usar un array y cuándo una lista?
+
+| | Lista de Python | Array de NumPy |
+|---|---|---|
+| Tipos de elementos | Mixtos (`[1, "texto", True]`) | Todos del mismo tipo |
+| Operaciones matemáticas | Requieren un loop | Directas sobre todo el array |
+| Velocidad | Lenta para cálculos | 10-100× más rápida |
+| Uso típico | Colecciones generales, texto | Series numéricas, matrices |
+
+```python
+# Lista — la operación no funciona como se espera
+velocidades_lista = [0.08, 0.09, 0.6, 0.07]
+velocidades_lista * 1.944    # repite la lista, no multiplica cada elemento
+
+# Array — la operación se aplica a cada elemento
+velocidades = np.array([0.08, 0.09, 0.6, 0.07])
+velocidades * 1.944          # [0.156, 0.175, 1.166, 0.136] — correcto
+```
+
+**Regla práctica**: si vas a hacer cálculos (sumas, medias, trigonometría), usa arrays. Si solo necesitas guardar una colección de cosas para iterar sobre ellas, una lista está bien.
+
 ## Arrays
 
 ```python
@@ -38,9 +61,9 @@ datos.ndim     # 2
 datos.size     # 55 — total de elementos
 ```
 
-## Operaciones vectorizadas
+## Operaciones vectorizadas y broadcasting
 
-La ventaja de NumPy es que las operaciones se aplican a todo el array sin necesidad de un loop:
+La ventaja de NumPy es que las operaciones se aplican a todo el array sin necesidad de un loop. A esto se le llama **vectorización**:
 
 ```python
 vel = np.array([0.08, 0.09, 0.6, 0.07])
@@ -53,6 +76,24 @@ np.log(vel)        # logaritmo natural
 
 # Comparación — devuelve array de booleanos
 vel > 0.5          # [False, False, True, False]
+```
+
+**Broadcasting** es la regla que permite operar un array con un escalar (o con arrays de distinta forma compatible). NumPy "expande" el escalar para que coincida con el tamaño del array:
+
+```python
+vel = np.array([0.08, 0.09, 0.6, 0.07])
+
+# En vez de hacer un loop para convertir cada elemento:
+# for i in range(len(vel)):
+#     vel[i] = vel[i] * 1.944
+
+# NumPy lo hace solo — aplica el *1.944 a cada elemento:
+vel * 1.944    # [0.156, 0.175, 1.166, 0.136]
+
+# Sumar dos arrays del mismo tamaño — suma elemento a elemento:
+u = np.array([0.1, 0.2, 0.3])
+v = np.array([0.4, 0.5, 0.6])
+magnitud = np.sqrt(u**2 + v**2)   # calcula raíz de (u²+v²) para cada par
 ```
 
 ### Conversión velocidad/dirección ↔ componentes U, V

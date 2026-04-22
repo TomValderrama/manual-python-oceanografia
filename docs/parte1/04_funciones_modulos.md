@@ -2,6 +2,36 @@
 
 ## Funciones
 
+### ¿Por qué hacer una función?
+
+Cuando un mismo bloque de código aparece más de una vez — aunque sea con pequeñas variaciones — conviene convertirlo en función. Así se escribe una sola vez, se prueba una sola vez, y si hay que corregirlo se cambia en un solo lugar.
+
+```python
+# Sin función: repetir la misma lógica para cada mes
+vel_oct = datos_oct['velocidad']
+media_oct = vel_oct.mean()
+std_oct   = vel_oct.std()
+max_oct   = vel_oct.max()
+print(f"Oct — media={media_oct:.2f}  std={std_oct:.2f}  max={max_oct:.2f}")
+
+vel_nov = datos_nov['velocidad']
+media_nov = vel_nov.mean()
+std_nov   = vel_nov.std()
+max_nov   = vel_nov.max()
+print(f"Nov — media={media_nov:.2f}  std={std_nov:.2f}  max={max_nov:.2f}")
+
+# Con función: escribir la lógica una vez
+def reportar_estadisticas(df, nombre):
+    vel = df['velocidad']
+    print(f"{nombre} — media={vel.mean():.2f}  std={vel.std():.2f}  max={vel.max():.2f}")
+
+reportar_estadisticas(datos_oct, 'Oct')
+reportar_estadisticas(datos_nov, 'Nov')
+reportar_estadisticas(datos_dic, 'Dic')
+```
+
+La función no solo ahorra líneas — hace el código más fácil de entender porque el nombre `reportar_estadisticas` describe exactamente qué hace.
+
 Una función agrupa código reutilizable bajo un nombre. En un pipeline de procesamiento de datos casi toda la lógica está organizada en funciones: una para leer datos, otra para filtrar, otra para graficar, etc.
 
 ```python

@@ -42,15 +42,34 @@ df.info()           # resumen general: tipos, NaN, memoria
 # Columna por nombre
 df['velocidad']
 df[['velocidad', 'direccion']]   # varias columnas
+```
 
-# Filas por posición (iloc)
-df.iloc[0]          # primera fila
-df.iloc[0:5]        # primeras 5 filas
-df.iloc[2, 1]       # fila 2, columna 1
+### loc vs iloc — etiqueta vs posición
 
-# Filas por etiqueta de índice (loc)
-df.loc[0:4]
-df.loc[:, 'velocidad':'direccion']   # rango de columnas
+Esta es la distinción que más confunde al principio. La diferencia es simple:
+
+- **`iloc`** — accede por **posición numérica**, como los índices de una lista (0, 1, 2…)
+- **`loc`** — accede por **etiqueta del índice**, que puede ser un número, una fecha, un string
+
+```python
+# Si el índice del DataFrame es 0, 1, 2... ambos parecen iguales
+df.iloc[0]      # primera fila (por posición)
+df.loc[0]       # fila con etiqueta 0 (por etiqueta)
+
+# La diferencia importa cuando el índice es una fecha
+df = df.set_index('tiempo')   # índice es ahora DatetimeIndex
+
+df.iloc[0]                           # primera fila del DataFrame
+df.loc['2025-10-01']                 # fila con esa fecha exacta
+df.loc['2025-10-01':'2025-10-31']    # rango de fechas — solo funciona con loc
+```
+
+**Regla práctica**: si trabajas con series temporales (índice de fechas), usa `loc`. Si solo necesitas "las primeras N filas" o "la fila en la posición X", usa `iloc`.
+
+```python
+# Combinando filas y columnas
+df.iloc[0:5, 1:3]                          # filas 0-4, columnas 1-2 (posición)
+df.loc['2025-10', ['velocidad', 'dir']]    # octubre, columnas por nombre
 ```
 
 ## Filtrado
@@ -142,6 +161,18 @@ df['velocidad'].isna().sum()    # cantidad de NaN
 ```
 
 ## groupby — estadísticas por categoría
+
+`groupby` divide el DataFrame en grupos según el valor de una columna, calcula algo dentro de cada grupo, y devuelve los resultados combinados. Es el equivalente en código de "agrupar por X en una tabla pivot de Excel".
+
+```
+DataFrame original          Después de groupby('profundidad')
+──────────────────          ─────────────────────────────────
+profundidad  velocidad       profundidad  velocidad_media
+3            0.08            3            0.085
+3            0.09            7            0.335
+7            0.60            ← promedio dentro de cada grupo
+7            0.07
+```
 
 ```python
 # Estadísticas por profundidad
