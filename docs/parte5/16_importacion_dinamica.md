@@ -1,6 +1,6 @@
 # Importación dinámica
 
-En el pipeline de Pelícanos el autoinforme es un script genérico que puede procesar cualquier campaña. La configuración específica de cada proyecto (rutas, parámetros, profundidades, nombre de empresa) vive en un módulo Python separado que se carga en tiempo de ejecución según el nombre del proyecto. Esto elimina la necesidad de editar el script central cada vez que se agrega una nueva campaña.
+El autoinforme es un script genérico que puede procesar cualquier campaña. La configuración específica de cada proyecto (rutas, parámetros, profundidades, nombre de empresa) vive en un módulo Python separado que se carga en tiempo de ejecución según el nombre del proyecto. Esto elimina la necesidad de editar el script central cada vez que se agrega una nueva campaña.
 
 ## El problema: configuración por proyecto
 

@@ -2,7 +2,7 @@
 
 ## Funciones
 
-Una función agrupa código reutilizable bajo un nombre. En el pipeline de Pelícanos casi toda la lógica está organizada en funciones: una para leer datos, otra para filtrar, otra para graficar, etc.
+Una función agrupa código reutilizable bajo un nombre. En un pipeline de procesamiento de datos casi toda la lógica está organizada en funciones: una para leer datos, otra para filtrar, otra para graficar, etc.
 
 ```python
 def calcular_media_vectorial(velocidades, direcciones):
@@ -119,7 +119,7 @@ sys.path.insert(0, '/ruta/a/mi/libreria')
 from mi_modulo import mi_funcion
 ```
 
-Esto se usa constantemente en el pipeline de Pelícanos, por ejemplo en `run_pipeline.py` para cargar los módulos de procesamiento de cada instrumento.
+Esto se usa constantemente en el pipeline de procesamiento, por ejemplo en `run_pipeline.py` para cargar los módulos de cada instrumento.
 
 ### importlib — carga dinámica
 
@@ -141,7 +141,7 @@ parrafo_viento = notas.parrafo_viento
 
 ## Organizar código en módulos
 
-A medida que los scripts crecen, conviene separar el código en archivos temáticos. La estructura del módulo `ocean_data_analysis` de Pelícanos es un buen ejemplo:
+A medida que los scripts crecen, conviene separar el código en archivos temáticos. Un ejemplo de estructura para un proyecto de análisis oceanográfico:
 
 ```
 ocean_data_analysis/

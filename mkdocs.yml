@@ -1,6 +1,7 @@
-site_name: Manual de Python para Oceanografía
-site_description: Manual práctico de Python aplicado al procesamiento de datos oceanográficos
-site_author: Pelícanos Oceanografía
+site_name: "Python de Extremo a Extremo"
+site_description: "Automatización, Análisis Geoespacial y Visión Artificial"
+site_author: Tomás Valderrama
+site_url: https://tomvalderrama.github.io/manual/
 theme:
   name: material
   language: es
@@ -47,3 +48,5 @@ nav:
   - Parte VI — Datos geoespaciales:
     - parte6/17_rasterio_geopandas.md
     - parte6/18_coordenadas_mapas.md
+  - Parte VII — Visión artificial:
+    - parte7/19_ocr_batimetria.md

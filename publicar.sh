@@ -1,0 +1,14 @@
+#!/bin/bash
+# Publicar manual actualizado en el portafolio
+# Uso: bash publicar.sh  (desde la carpeta manual-python-oceanografia/)
+
+set -e
+
+bash generar_pdf.sh
+cp Python_de_Extremo_a_Extremo.pdf ../TomValderrama.github.io/manual/
+mkdocs build --site-dir ../TomValderrama.github.io/manual
+
+cd ../TomValderrama.github.io
+git add manual/
+git commit -m "Actualizar manual"
+git push

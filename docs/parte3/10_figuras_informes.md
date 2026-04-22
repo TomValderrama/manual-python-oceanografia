@@ -1,6 +1,6 @@
 # Figuras para informes
 
-En el pipeline de Pelícanos las figuras no solo se visualizan en Spyder, sino que se guardan como archivos PNG para luego insertarlas automáticamente en el informe Word. Esto implica cuidar resolución, tamaño, fuente y nomenclatura de archivos.
+En un pipeline de informes automatizados las figuras no solo se visualizan en Spyder, sino que se guardan como archivos PNG para luego insertarlas en el informe Word. Esto implica cuidar resolución, tamaño, fuente y nomenclatura de archivos.
 
 ## Estilo consistente
 

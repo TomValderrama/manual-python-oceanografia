@@ -1,6 +1,6 @@
 # Plantillas y placeholders
 
-El autoinforme de Pelícanos se basa en una plantilla Word preformateada (`.docx`) con marcadores de posición —**placeholders**— que Python reemplaza en tiempo de ejecución. Este enfoque separa el diseño visual (responsabilidad del Word) del contenido numérico (responsabilidad del script).
+El autoinforme se basa en una plantilla Word preformateada (`.docx`) con marcadores de posición —**placeholders**— que Python reemplaza en tiempo de ejecución. Este enfoque separa el diseño visual (responsabilidad del Word) del contenido numérico (responsabilidad del script).
 
 ## Convención de placeholders
 

@@ -2,7 +2,7 @@
 
 Pandas es la librería principal para manejo de datos tabulares. Su estructura central es el **DataFrame**: una tabla con filas y columnas etiquetadas, similar a una hoja de Excel pero operable desde código.
 
-En el pipeline de Pelícanos, todos los datos de corrientes, viento y oleaje se manejan como DataFrames de Pandas.
+En el procesamiento de datos oceanográficos, los datos de corrientes, viento y oleaje se manejan como DataFrames de Pandas.
 
 ```python
 import pandas as pd

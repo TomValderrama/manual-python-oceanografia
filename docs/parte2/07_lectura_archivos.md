@@ -1,6 +1,6 @@
 # Lectura de archivos
 
-El pipeline de Pelícanos lee datos de múltiples fuentes y formatos: CSV del datalogger de viento, Excel de procesamiento, archivos `.mat` de MATLAB (STORM2), binarios del Nortek (`.prf`), y documentos Word para extracción de metadata.
+Un pipeline de datos oceanográficos lee de múltiples fuentes y formatos: CSV del datalogger de viento, Excel de procesamiento, archivos `.mat` de MATLAB (STORM2), binarios del Nortek (`.prf`), y documentos Word para extracción de metadata.
 
 ## Archivos de texto y CSV
 

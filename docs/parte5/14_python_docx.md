@@ -1,6 +1,6 @@
 # python-docx
 
-`python-docx` permite crear y modificar documentos Word (`.docx`) desde Python. En el pipeline de Pelícanos se usa para generar el informe final: rellenar texto, insertar figuras, construir tablas y aplicar formato, todo a partir de una plantilla base.
+`python-docx` permite crear y modificar documentos Word (`.docx`) desde Python. Se usa para generar informes automáticamente: rellenar texto, insertar figuras, construir tablas y aplicar formato, todo a partir de una plantilla base.
 
 ## Instalación
 
@@ -152,7 +152,7 @@ run.bold = True
 run.font.size = Pt(11)
 
 run2 = p.add_run('0.62 m/s')
-run2.font.color.rgb = RGBColor(0x00, 0x5B, 0x96)   # azul Pelícanos
+run2.font.color.rgb = RGBColor(0x00, 0x5B, 0x96)
 run2.bold = True
 ```
 
@@ -225,4 +225,4 @@ generar_informe(
 ```
 
 !!! warning "Estilos y plantilla"
-    Los estilos de Word (Título 1, Normal, Tabla Grid) están definidos en la plantilla. Si se crea un documento desde cero con `Document()`, los estilos por defecto de python-docx son distintos a los del template de Pelícanos. Siempre trabajar sobre la plantilla para conservar los estilos visuales del informe.
+    Los estilos de Word (Título 1, Normal, Tabla Grid) están definidos en la plantilla. Si se crea un documento desde cero con `Document()`, los estilos por defecto de python-docx son distintos a los del template corporativo. Siempre trabajar sobre la plantilla para conservar los estilos visuales del informe.

@@ -87,7 +87,7 @@ for prof in profundidades:
 
 ## List comprehensions
 
-Una forma compacta de construir listas a partir de otra secuencia. Muy usadas en el código de Pelícanos para transformar o filtrar datos:
+Una forma compacta de construir listas a partir de otra secuencia. Muy usadas en el procesamiento de datos para transformar o filtrar colecciones:
 
 ```python
 profundidades = [3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23]
