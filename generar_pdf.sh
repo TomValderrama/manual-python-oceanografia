@@ -36,6 +36,7 @@ echo "Generando PDF..."
 pandoc "${ARCHIVOS[@]}" \
   --pdf-engine=xelatex \
   --output="$SALIDA" \
+  --resource-path=".:docs/parte1:docs/parte2:docs/parte3:docs/parte4:docs/parte5:docs/parte6:docs/parte7" \
   --toc \
   --toc-depth=2 \
   --number-sections \
