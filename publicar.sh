@@ -7,7 +7,7 @@ set -e
 bash generar_pdf.sh
 
 cd ../TomValderrama.github.io
-git pull --rebase
+git pull --rebase --autostash
 cd -
 
 mkdocs build --site-dir ../TomValderrama.github.io/manual
