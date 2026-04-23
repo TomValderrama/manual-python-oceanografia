@@ -62,6 +62,31 @@ Referencia rápida de términos usados en el manual.
 
 ---
 
+## Herramientas y entorno
+
+**entorno virtual**
+: Instalación aislada de Python con sus propios paquetes, independiente del sistema global. Permite que distintos proyectos usen versiones distintas de las mismas librerías sin conflictos.
+
+**conda**
+: Gestor de paquetes y entornos incluido en Anaconda. A diferencia de pip, resuelve dependencias binarias (C, Fortran) además de Python. Comandos principales: `conda create`, `conda activate`, `conda install`, `conda env export`.
+
+**pip**
+: Gestor de paquetes oficial de Python. Instala desde PyPI. Se usa junto con conda para paquetes que no están en los repositorios de conda.
+
+**environment.yml**
+: Archivo YAML que describe un entorno conda: nombre, canales, y lista de paquetes con versiones exactas. Se genera con `conda env export` y permite recrear el entorno exacto en otro equipo con `conda env create -f environment.yml`.
+
+**YAML** (*YAML Ain't Markup Language*)
+: Formato de texto para configuración y datos estructurados. Más legible que JSON: no usa comillas en strings simples y admite comentarios con `#`. Estándar para archivos de configuración de proyectos y pipelines. Se lee en Python con `yaml.safe_load()` del paquete `pyyaml`.
+
+**tqdm**
+: Librería para barras de progreso. Envuelve cualquier iterable: `for x in tqdm(lista)` muestra una barra con porcentaje, velocidad y tiempo estimado. Especialmente útil en loops que procesan decenas o cientos de archivos.
+
+**logging**
+: Módulo de la librería estándar de Python para registrar mensajes de diagnóstico. A diferencia de `print`, cada mensaje tiene timestamp y nivel de severidad (`DEBUG`, `INFO`, `WARNING`, `ERROR`). Permite escribir simultáneamente a consola y a un archivo de log sin modificar el código.
+
+---
+
 ## NumPy
 
 **array**
@@ -110,6 +135,21 @@ Referencia rápida de términos usados en el manual.
 **groupby**
 : Divide el DataFrame en grupos según el valor de una columna, aplica una función a cada grupo y combina los resultados. Equivalente a una tabla dinámica por categoría.
 
+**rolling**
+: Ventana deslizante sobre una Serie temporal. `df['vel'].rolling('1h').mean()` calcula la media del último hora en cada punto. Se usa para suavizar series con ruido de alta frecuencia.
+
+**pd.cut**
+: Divide una columna continua en intervalos discretos con etiquetas. `pd.cut(df['vel'], bins=[0, 0.1, 0.5, 1.0], labels=['calma','leve','fuerte'])` asigna una categoría a cada valor. Se usa para construir tablas de incidencia velocidad × dirección.
+
+**merge**
+: Une dos DataFrames por una columna común, equivalente a un JOIN de SQL. El parámetro `how` controla qué filas se conservan: `inner` (solo matches), `left` (todas las del primero), `outer` (todas las de ambos).
+
+**concat**
+: Apila DataFrames con la misma estructura vertialmente (más filas) u horizontalmente (más columnas). Se usa para unir datos de distintos períodos antes de calcular estadísticas globales.
+
+**pathlib.Path**
+: Clase de la librería estándar para manejar rutas de archivos de forma orientada a objetos y multiplataforma. `Path('/ruta') / 'subcarpeta' / 'archivo.csv'` construye rutas sin concatenar strings con `/` o `os.path.join`.
+
 ---
 
 ## Visualización
@@ -121,7 +161,25 @@ Referencia rápida de términos usados en el manual.
 : El panel de dibujo dentro de una Figure. Contiene los ejes X e Y, los datos graficados, etiquetas y leyenda. Una Figure puede tener varios Axes (subplots).
 
 **backend**
-: Motor que matplotlib usa para mostrar figuras. `Inline`: figuras en la consola de Spyder. `Tkinter`: ventana interactiva separada. `Agg`: sin ventana, solo para guardar archivos (útil en scripts automáticos).
+: Motor que matplotlib usa para renderizar y mostrar figuras. `Agg`: sin ventana, renderiza a memoria (para guardar archivos). `TkAgg`: ventana Tkinter interactiva, estable en Spyder. `Qt5Agg`: ventana Qt5, puede interferir con el event loop de Spyder. `inline`: hook de IPython sobre Agg que embebe la figura como imagen en la consola.
+
+**event loop**
+: Bucle de escucha continua de eventos (clics, teclado, redimensionado) que necesita cualquier ventana de escritorio para responder al usuario. Python solo puede correr un event loop a la vez en el hilo principal, por eso `plt.show()` bloquea la ejecución hasta que se cierra la ventana.
+
+**matplotlib.widgets**
+: Módulo de matplotlib que provee controles interactivos dentro del canvas de una figura: `Slider`, `Button`, `CheckButtons`, `RadioButtons`. No requieren construir una aplicación Qt o Tk completa, pero están limitados al espacio del gráfico.
+
+**FuncAnimation**
+: Clase de `matplotlib.animation` que crea animaciones llamando repetidamente a una función de actualización. El resultado se puede mostrar en vivo o exportar como GIF (requiere pillow) o MP4 (requiere ffmpeg).
+
+**GridSpec**
+: Clase de `matplotlib.gridspec` para layouts de subplots con tamaños desiguales. Permite definir `height_ratios` y `width_ratios` para que algunos paneles sean más grandes que otros, y posicionar cada Axes en celdas arbitrarias de la grilla.
+
+**twin axes**
+: Técnica de matplotlib para superponer dos variables con escalas distintas en el mismo panel. `ax2 = ax1.twinx()` crea un eje Y derecho que comparte el eje X con el izquierdo. Útil para comparar velocidad y temperatura en la misma serie temporal.
+
+**PyQt5**
+: Librería para construir aplicaciones de escritorio completas en Python usando el framework Qt5. Permite crear ventanas con menús, botones y tablas, y embeber matplotlib como un widget (`FigureCanvasQTAgg`). Más potente que `matplotlib.widgets` pero más complejo. Los scripts PyQt5 deben correrse fuera de Spyder.
 
 ---
 

@@ -7,10 +7,11 @@ set -e
 DOCS="docs"
 SALIDA="Python_de_Extremo_a_Extremo.pdf"
 
-# Detectar capítulos automáticamente: index.md primero, luego parte*/NN_*.md en orden
+# Detectar capítulos automáticamente: index.md primero, luego parte*/NN_*.md en orden, glosario al final
 ARCHIVOS=(
   "$DOCS/index.md"
   $(find "$DOCS" -path "$DOCS/parte*/*.md" | sort)
+  "$DOCS/glosario.md"
 )
 
 # Construir --resource-path desde todas las carpetas parte* que existan
