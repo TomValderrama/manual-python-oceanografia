@@ -153,12 +153,19 @@ En VSCode, el backend inline se activa automáticamente en el modo interactivo. 
 
 ### Atajos equivalentes a Spyder
 
+**Ejecución y edición**
+
 | Acción | Spyder | VSCode |
 |---|---|---|
 | Ejecutar celda | `Ctrl+Enter` | `Shift+Enter` |
 | Ejecutar celda y avanzar | `Shift+Enter` | `Shift+Enter` |
 | Ejecutar selección | `F9` | `Shift+Enter` (con selección) |
 | Comentar / descomentar | `Ctrl+1` | `Ctrl+/` |
+
+**Navegación y búsqueda**
+
+| Acción | Spyder | VSCode |
+|---|---|---|
 | Ir a definición | `Ctrl+G` | `F12` |
 | Buscar en archivo | `Ctrl+F` | `Ctrl+F` |
 | Buscar en todo el proyecto | — | `Ctrl+Shift+F` |

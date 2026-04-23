@@ -51,8 +51,6 @@ print(os.getcwd())           # directorio actual desde donde corre el script
 print(os.path.exists('datos.csv'))  # True/False
 ```
 
----
-
 ### `KeyError` — clave o columna inexistente
 
 ```python
@@ -67,8 +65,6 @@ df['velocidat']
 print(df.columns.tolist())   # ver exactamente qué columnas hay
 ```
 
----
-
 ### `IndexError` — índice fuera de rango
 
 ```python
@@ -78,8 +74,6 @@ lista[5]
 ```
 
 **Causa**: se intenta acceder a una posición que no existe. Recuerda que el índice máximo es `len(lista) - 1`.
-
----
 
 ### `TypeError` — tipo incorrecto para la operación
 
@@ -95,8 +89,6 @@ lista[5]
 f"Profundidad: {7}"           # OK con f-string
 ```
 
----
-
 ### `ValueError` — valor incorrecto aunque el tipo es correcto
 
 ```python
@@ -109,8 +101,6 @@ pd.to_datetime("no es una fecha")
 
 **Causa**: el tipo es correcto (es un string) pero el contenido no es válido para la operación pedida.
 
----
-
 ### `AttributeError` — atributo o método inexistente
 
 ```python
@@ -121,8 +111,6 @@ lista.mean()
 
 **Causa**: se llama un método que no existe en ese tipo. `.mean()` existe en arrays NumPy y Series de pandas, no en listas de Python.
 
----
-
 ### `NameError` — variable no definida
 
 ```python
@@ -131,8 +119,6 @@ print(resultado)
 ```
 
 **Causa**: la variable nunca fue asignada, o la celda que la define no se ejecutó todavía.
-
----
 
 ### `IndentationError` — indentación incorrecta
 
@@ -143,8 +129,6 @@ print("positivo")
 ```
 
 **Causa**: falta la indentación después de `if`, `for`, `def`, etc.
-
----
 
 ### `ModuleNotFoundError` — librería no instalada
 
