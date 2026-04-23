@@ -24,6 +24,7 @@ echo "Generando PDF (${#ARCHIVOS[@]} archivos)..."
 pandoc "${ARCHIVOS[@]}" \
   --pdf-engine=xelatex \
   --output="$SALIDA" \
+  --from=markdown-smart \
   --lua-filter=admonitions.lua \
   --resource-path="$RESOURCE_PATH" \
   --toc \

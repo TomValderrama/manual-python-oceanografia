@@ -1,33 +1,28 @@
 -- admonitions.lua
--- Convierte bloques !!! tip/warning "Título"\n    contenido
--- a texto con negrita para el PDF (pandoc no entiende la sintaxis MkDocs)
+-- Convierte !!! tip/warning "Título"\n    contenido
+-- a párrafo con negrita para el PDF generado por pandoc
 
 function Para(el)
   local text = pandoc.utils.stringify(el)
 
-  -- Buscar patrón:  !!! tipo "Título"  [contenido opcional en el mismo párrafo]
-  local atype, title, content = text:match('^!!!%s+(%a+)%s+"([^"]*)"(.*)$')
-
+  local atype, title, rest = text:match('^!!!%s+(%a+)%s+"([^"]*)"(.*)$')
   if not atype then
-    -- Sin comillas: !!! tipo Título
-    atype, title = text:match('^!!!%s+(%a+)%s+(.+)$')
-    content = ''
+    atype, title = text:match('^!!!%s+(%a+)%s+(.-)%s*$')
+    rest = ''
   end
-
   if not atype then return nil end
 
-  content = content:gsub('^%s+', ''):gsub('%s+$', '')
+  local content = (rest or ''):gsub('^%s+', ''):gsub('%s+$', '')
+  local prefix  = (atype == 'warning') and '⚠  ' or '▶  '
 
-  local prefix = (atype == 'warning') and '⚠  ' or '▶  '
-  local header = prefix .. title
+  -- Construir inlines: [Strong(prefix+title), Str(" — "), ...contenido...]
+  local inlines = pandoc.List()
+  inlines:insert(pandoc.Strong({ pandoc.Str(prefix .. title) }))
 
-  -- Construir inlines: negrita para el encabezado, texto normal para el contenido
-  local inlines = pandoc.List({})
-  inlines:extend(pandoc.Strong(pandoc.Str(header)).content)
   if content ~= '' then
-    inlines:insert(pandoc.Str(' — '))
+    inlines:insert(pandoc.Str(' \u{2014} '))   -- em dash
     local parsed = pandoc.read(content, 'markdown')
-    if #parsed.blocks > 0 and parsed.blocks[1].t == 'Para' then
+    if parsed.blocks[1] and parsed.blocks[1].t == 'Para' then
       inlines:extend(parsed.blocks[1].content)
     else
       inlines:insert(pandoc.Str(content))
