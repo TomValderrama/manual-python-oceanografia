@@ -6,8 +6,10 @@ set -e
 
 bash generar_pdf.sh
 
+# Partir siempre desde el estado remoto (manual/ se regenera completo)
 cd ../TomValderrama.github.io
-git pull --rebase --autostash
+git fetch origin
+git reset --hard origin/main
 cd -
 
 mkdocs build --site-dir ../TomValderrama.github.io/manual
