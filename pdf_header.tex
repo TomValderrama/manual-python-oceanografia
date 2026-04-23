@@ -23,6 +23,7 @@
 % Tabla sin espacio para ninguna fila: mover tabla entera a la página siguiente
 \AtBeginEnvironment{longtable}{\needspace{8\baselineskip}}
 
-% Bloque de código que empieza al final de la página: moverlo si no hay 8 líneas libres
-% Cubre diagramas ASCII (~8 líneas) y bloques medianos. Bloques de 20+ líneas igual parten.
+% Bloques de código que empiezan al final de la página: moverlos si no hay 8 líneas libres.
+% Shaded = bloques con lenguaje (python, bash…); verbatim = bloques sin lenguaje (diagramas ASCII).
 \BeforeBeginEnvironment{Shaded}{\needspace{8\baselineskip}}
+\BeforeBeginEnvironment{verbatim}{\needspace{8\baselineskip}}
