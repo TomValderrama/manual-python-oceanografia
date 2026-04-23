@@ -13,11 +13,13 @@ Manual práctico con ejemplos reales de procesamiento de datos científicos: des
 - **Parte V** — Automatización de informes Word con python-docx
 - **Parte VI** — Datos geoespaciales con Rasterio y GeoPandas
 - **Parte VII** — Visión artificial: OCR de cartas batimétricas con OpenCV y Tesseract
+- **Parte VIII** — Modelos numéricos oceánicos: outputs NetCDF de CROCO con xarray
+- **Parte IX** — Datos satelitales: Sentinel-2 vía API STAC de Copernicus y análisis de tiles MGRS
 
 ## Requisitos
 
 ```bash
-pip install numpy pandas matplotlib scipy openpyxl python-docx windrose rasterio geopandas pyproj contextily opencv-python pytesseract pillow
+pip install numpy pandas matplotlib scipy openpyxl python-docx windrose rasterio geopandas pyproj contextily opencv-python pytesseract pillow xarray netcdf4 cartopy pystac-client shapely
 ```
 
 ## Cómo usar este manual

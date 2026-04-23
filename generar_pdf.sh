@@ -29,6 +29,8 @@ ARCHIVOS=(
   "$DOCS/parte6/17_rasterio_geopandas.md"
   "$DOCS/parte6/18_coordenadas_mapas.md"
   "$DOCS/parte7/19_ocr_batimetria.md"
+  "$DOCS/parte8/20_croco_outputs.md"
+  "$DOCS/parte9/21_sentinel_stac_mgrs.md"
 )
 
 echo "Generando PDF..."

@@ -13,6 +13,8 @@ Manual práctico de Python para automatización, análisis geoespacial y visión
 | **V — Automatización de informes** | python-docx, plantillas con placeholders, importación dinámica |
 | **VI — Datos geoespaciales** | Rasterio, GeoPandas, coordenadas y mapas base |
 | **VII — Visión artificial** | OCR de imágenes con OpenCV y Tesseract |
+| **VIII — Modelos numéricos** | Outputs NetCDF de CROCO/ROMS con xarray |
+| **IX — Datos satelitales** | Sentinel-2 vía API STAC de Copernicus, tiles MGRS |
 
 ## Ver el manual
 
@@ -29,5 +31,5 @@ mkdocs serve
 ## Requisitos
 
 ```bash
-pip install numpy pandas matplotlib scipy openpyxl python-docx windrose rasterio geopandas pyproj contextily pytesseract opencv-python
+pip install numpy pandas matplotlib scipy openpyxl python-docx windrose rasterio geopandas pyproj contextily pytesseract opencv-python xarray netcdf4 cartopy pystac-client shapely
 ```
