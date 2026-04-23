@@ -13,7 +13,7 @@ function Para(el)
   if not atype then return nil end
 
   local content = (rest or ''):gsub('^%s+', ''):gsub('%s+$', '')
-  local prefix  = (atype == 'warning') and '⚠  ' or '▶  '
+  local prefix  = (atype == 'warning') and '[!] ' or '[>] '
 
   -- Construir inlines: [Strong(prefix+title), Str(" — "), ...contenido...]
   local inlines = pandoc.List()
