@@ -78,7 +78,7 @@ EMPRESA      = 'Puerto Los Vilos S.A.'
 FECHA_INICIO = '2025-10-01'
 FECHA_FIN    = '2025-10-31'
 
-RUTA_BASE    = Path('/mnt/c/Users/Tomas/PELICANOS Dropbox/Proyectos2025/Los Vilos')
+RUTA_BASE    = Path('/mnt/c/Users/Usuario/proyectos/los_vilos_2025')
 RUTA_DATOS   = RUTA_BASE / 'datos' / 'corrientes_procesadas.xlsx'
 RUTA_FIGURAS = RUTA_BASE / 'figuras_magnitud'
 RUTA_SALIDA  = RUTA_BASE / 'informe' / 'Los_Vilos_Corrientes_Oct2025.docx'
@@ -171,5 +171,5 @@ if __name__ == '__main__':
     main()
 ```
 
-!!! tip "Alternativa con JSON"
-    Si la configuración es puramente datos (sin paths que necesiten `Path` o expresiones Python), se puede guardar como JSON y cargar con `json.load`. La ventaja de módulos `.py` es que permiten expresiones, herencia entre configs y paths relativos calculados con `Path(__file__).parent`.
+!!! tip "Alternativa con YAML"
+    Si la configuración es puramente datos (sin expresiones Python ni herencia entre proyectos), se puede guardar como YAML y cargar con `yaml.safe_load` (ver capítulo 07). La ventaja del módulo `.py` es que permite expresiones, lógica condicional y paths calculados con `Path(__file__).parent`. La ventaja del YAML es que cualquiera puede editarlo sin saber Python.

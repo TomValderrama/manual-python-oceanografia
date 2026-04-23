@@ -2,6 +2,39 @@
 
 El análisis espectral descompone una serie temporal en sus componentes de frecuencia, mostrando cuánta energía hay en cada período. En oceanografía se aplica principalmente al oleaje (para obtener el espectro de energía y extraer parámetros como Hm0 y Tp) y a las corrientes (para identificar mareas, inerciales y otras señales periódicas).
 
+## Preparar la serie antes del análisis
+
+La FFT y Welch requieren una serie **sin NaN** y con **resolución temporal regular**. Los datos oceanográficos frecuentemente tienen huecos. El paso previo es siempre verificar y limpiar:
+
+```python
+import pandas as pd
+import numpy as np
+
+# Verificar que el índice es regular (sin saltos de tiempo)
+diffs = df.index.to_series().diff().dropna()
+dt_esperado = pd.Timedelta(minutes=10)
+irregulares = diffs[diffs != dt_esperado]
+if not irregulares.empty:
+    print(f"Saltos de tiempo en: {irregulares.index.tolist()}")
+
+# Completar el índice temporal si hay filas faltantes
+df = df.resample('10min').asfreq()   # inserta NaN donde faltaban filas
+
+# Interpolación lineal para huecos cortos (≤ 1 hora = 6 muestras)
+df['velocidad'] = df['velocidad'].interpolate(method='linear', limit=6)
+
+# Verificar que no quedan NaN antes de la FFT
+n_nan = df['velocidad'].isna().sum()
+if n_nan > 0:
+    print(f"  ! {n_nan} NaN no interpolados — se eliminarán los extremos")
+    df = df.dropna(subset=['velocidad'])
+
+serie = df['velocidad'].values
+```
+
+!!! warning "NaN en la FFT"
+    `np.fft.rfft` y `scipy.signal.welch` no toleran NaN — producen un espectro de NaN sin error ni aviso. Siempre verificar con `np.isnan(serie).any()` antes de transformar.
+
 ## Transformada de Fourier con NumPy
 
 La FFT es el punto de partida para cualquier análisis espectral:

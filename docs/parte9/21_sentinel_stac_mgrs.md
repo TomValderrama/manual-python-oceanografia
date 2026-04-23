@@ -186,6 +186,82 @@ plt.tight_layout()
 plt.savefig("cobertura_enero_2024.png", dpi=150)
 ```
 
+## Descargar imágenes reales
+
+Los metadatos STAC incluyen los enlaces a los archivos. Para descargar las bandas de una imagen concreta se necesita una cuenta gratuita en `dataspace.copernicus.eu`:
+
+```python
+import requests, os
+
+# Autenticación — obtener token
+def obtener_token(usuario, clave):
+    r = requests.post(
+        "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token",
+        data={
+            "client_id": "cdse-public",
+            "grant_type": "password",
+            "username": usuario,
+            "password": clave,
+        }
+    )
+    r.raise_for_status()
+    return r.json()["access_token"]
+
+token = obtener_token("mi_email@ejemplo.com", "mi_clave")
+headers = {"Authorization": f"Bearer {token}"}
+```
+
+```python
+# Encontrar la imagen con menos nubes en enero 2024
+item_mejor = min(items, key=lambda i: i.properties.get("eo:cloud_cover", 100))
+
+# Los assets incluyen cada banda por separado
+for nombre, asset in item_mejor.assets.items():
+    print(f"{nombre:20s}  {asset.href}")
+# B02    https://.../.../B02.tif      ← azul (10 m)
+# B03    https://.../.../B03.tif      ← verde (10 m)
+# B04    https://.../.../B04.tif      ← rojo (10 m)
+# B08    https://.../.../B08.tif      ← NIR (10 m)
+# ...
+```
+
+```python
+def descargar_banda(href, ruta_local, headers):
+    """Descarga una banda Sentinel-2 con autenticación."""
+    os.makedirs(os.path.dirname(ruta_local), exist_ok=True)
+    with requests.get(href, headers=headers, stream=True) as r:
+        r.raise_for_status()
+        with open(ruta_local, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=1 << 20):   # 1 MB
+                f.write(chunk)
+    print(f"Descargado: {os.path.basename(ruta_local)}")
+
+# Descargar banda roja y NIR para calcular NDVI
+tile_id = item_mejor.id
+descargar_banda(item_mejor.assets['B04'].href,
+                f"imagenes/{tile_id}_B04.tif", headers)
+descargar_banda(item_mejor.assets['B08'].href,
+                f"imagenes/{tile_id}_B08.tif", headers)
+```
+
+```python
+# Calcular NDVI con rasterio
+import rasterio
+import numpy as np
+
+with rasterio.open(f"imagenes/{tile_id}_B04.tif") as src:
+    rojo = src.read(1).astype(float)
+with rasterio.open(f"imagenes/{tile_id}_B08.tif") as src:
+    nir  = src.read(1).astype(float)
+    meta = src.meta.copy()
+
+ndvi = (nir - rojo) / (nir + rojo + 1e-10)
+
+meta.update(dtype='float32', count=1)
+with rasterio.open(f"imagenes/{tile_id}_NDVI.tif", 'w', **meta) as dst:
+    dst.write(ndvi.astype('float32'), 1)
+```
+
 !!! tip "Filtrar por nubosidad antes de descargar"
     La nubosidad está disponible en los metadatos, lo que permite filtrar antes de descargar cualquier imagen:
     ```python
