@@ -299,6 +299,76 @@ Salida en consola y en `pipeline.log`:
 
 **Cuándo usar logging en vez de print**: cuando el script corre automáticamente (por ejemplo, desde un cron o un bat), cuando se necesita guardar el historial de ejecuciones, o cuando se quiere poder aumentar el nivel de detalle (`DEBUG`) sin modificar el código.
 
+## Reiniciar el kernel y el estado de la sesión
+
+### Limpiar consola vs reiniciar kernel
+
+Son dos operaciones distintas que confunden al principio:
+
+**Limpiar la consola** (`Ctrl+L`, o escribir `%clear`) borra el texto visible — outputs, errores impresos, historial. El namespace de variables **no cambia**: `df`, `velocidades`, `resultado` siguen existiendo en memoria.
+
+**Reiniciar el kernel** (`Ctrl+.` en Spyder, o menú **Consolas → Reiniciar kernel**) termina el proceso Python y arranca uno nuevo. El namespace queda completamente vacío. Es equivalente a cerrar Python y abrirlo de nuevo.
+
+### El problema del estado acumulado
+
+En Spyder se ejecutan celdas en cualquier orden, se prueban cosas en la consola y se vuelve a correr solo una parte del script. Con el tiempo el namespace acumula variables de corridas anteriores que el script actual nunca definió — pero como ya están en memoria, no aparece error.
+
+El síntoma clásico:
+
+```python
+# El script "funciona" en Spyder...
+resultado = calcular(df)   # df existe porque la cargaste antes en la consola
+
+# ...pero falla al correrlo con F5 desde cero, o desde la terminal:
+# NameError: name 'df' is not defined
+```
+
+**Regla práctica**: si el script funciona celda por celda pero falla al correr con `F5` desde cero, hay estado acumulado. Reiniciar el kernel y volver a correr `F5` revela qué falta realmente.
+
+### Cuándo reiniciar el kernel
+
+| Situación | Acción |
+|---|---|
+| Script falla con `NameError` al correr `F5` completo | Reiniciar kernel → `F5` |
+| Modificaste una función y el cambio no tiene efecto | Reiniciar kernel o `%reset` |
+| Cambiaste `%matplotlib` backend y no responde | Reiniciar kernel |
+| Variables grandes consumen demasiada RAM | Reiniciar kernel |
+| Quieres verificar que el script es reproducible | Reiniciar kernel → `F5` |
+
+### %reset — limpiar el namespace sin reiniciar
+
+`%reset` limpia las variables pero mantiene el intérprete activo. Más rápido que reiniciar el kernel cuando solo se quiere empezar con un namespace limpio:
+
+```python
+%reset        # pide confirmación
+%reset -f     # fuerza sin confirmación (más cómodo)
+```
+
+### Cambios en el código y cuándo re-ejecutar
+
+**Si modificás una función en el mismo script**: re-ejecutar la celda que la define reemplaza la definición en el namespace. Con `F5` se re-ejecuta todo el script y todas las definiciones quedan actualizadas.
+
+**Si modificás un módulo importado** (`from utils import calcular`): volver a ejecutar el `import` no recarga el módulo — Python lo tiene en caché. Hay que forzar la recarga:
+
+```python
+import importlib
+import utils                  # importación inicial
+
+# Después de editar utils.py en el editor:
+importlib.reload(utils)
+from utils import calcular    # ahora usa la versión actualizada
+```
+
+O desde la consola de Spyder, más directo:
+
+```python
+%run utils.py    # ejecuta el archivo y actualiza el namespace con lo que define
+```
+
+**Si modificás una clase**: las instancias ya creadas no se actualizan al recargar el módulo. Hay que reiniciar el kernel para que las nuevas instancias usen la clase modificada.
+
+**Regla general**: si cambiaste el código y el comportamiento no cambió, es casi siempre porque Python sigue usando la versión anterior en caché. La solución más segura y más rápida de verificar es siempre: reiniciar kernel → `F5`.
+
 ## Errores silenciosos
 
 Los más difíciles de detectar son los que no producen error pero dan un resultado incorrecto. Ejemplos frecuentes:
