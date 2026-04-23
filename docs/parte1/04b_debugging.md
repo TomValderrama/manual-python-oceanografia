@@ -248,6 +248,57 @@ assert 'velocidad' in df.columns, f"Columna 'velocidad' no encontrada. Columnas:
 
 Si la condición es falsa, Python lanza un `AssertionError` con el mensaje — más claro que esperar a que falle más adelante.
 
+## logging — alternativa a print para pipelines
+
+`print` es suficiente para exploración interactiva. En un pipeline automático que corre sin supervisión, `logging` tiene ventajas concretas: cada mensaje tiene timestamp, nivel de severidad, y se puede escribir a un archivo sin tocar el código.
+
+```python
+import logging
+
+# Configuración básica — una sola vez al inicio del script
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s  %(levelname)-8s  %(message)s',
+    datefmt='%H:%M:%S',
+    handlers=[
+        logging.StreamHandler(),                        # consola
+        logging.FileHandler('pipeline.log', 'w')       # archivo
+    ]
+)
+
+logger = logging.getLogger(__name__)
+```
+
+```python
+# Usar en el código en vez de print
+logger.debug('Detalle interno útil para debugging')      # solo visible en nivel DEBUG
+logger.info('Leyendo archivo corrientes_oct2024.csv')    # progreso normal
+logger.warning('Columna "dir" tiene 3% de NaN')         # algo inesperado pero no fatal
+logger.error('No se encontró el archivo de viento')     # error que impide continuar
+```
+
+```python
+# Patrón para el pipeline de archivos
+for archivo in archivos:
+    try:
+        df = pd.read_csv(archivo)
+        logger.info(f'OK  {archivo}  ({len(df)} filas)')
+    except FileNotFoundError:
+        logger.warning(f'No encontrado: {archivo}')
+    except Exception as e:
+        logger.error(f'Error en {archivo}: {e}')
+```
+
+Salida en consola y en `pipeline.log`:
+```
+14:32:01  INFO      OK  oct2024.csv  (8640 filas)
+14:32:02  INFO      OK  nov2024.csv  (8352 filas)
+14:32:02  WARNING   No encontrado: dic2024.csv
+14:32:03  INFO      OK  ene2025.csv  (8928 filas)
+```
+
+**Cuándo usar logging en vez de print**: cuando el script corre automáticamente (por ejemplo, desde un cron o un bat), cuando se necesita guardar el historial de ejecuciones, o cuando se quiere poder aumentar el nivel de detalle (`DEBUG`) sin modificar el código.
+
 ## Errores silenciosos
 
 Los más difíciles de detectar son los que no producen error pero dan un resultado incorrecto. Ejemplos frecuentes:

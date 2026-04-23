@@ -27,6 +27,7 @@ nav:
   - Parte I — Fundamentos:
     - parte1/01_entorno_spyder.md
     - parte1/01b_spyder_vs_vscode.md
+    - parte1/01c_entornos_conda.md
     - parte1/02_sintaxis.md
     - parte1/03_control_flujo.md
     - parte1/04_funciones_modulos.md

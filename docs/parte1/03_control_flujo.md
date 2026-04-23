@@ -308,6 +308,39 @@ superficiales = [p for p in profundidades if p <= 7]
 
 La comprehension se lee de corrido: "lista de p, para cada p en profundidades, si p ≤ 7". Úsala cuando la lógica cabe en una línea. Si hay condiciones anidadas o el cuerpo del loop hace varias cosas, el for explícito es más fácil de leer y modificar.
 
+### tqdm — barra de progreso en loops largos
+
+Cuando un loop procesa decenas o cientos de archivos, no hay feedback visual de cuánto falta. `tqdm` agrega una barra de progreso con una línea de cambio:
+
+```bash
+pip install tqdm    # o: conda install tqdm
+```
+
+```python
+from tqdm import tqdm
+
+archivos = ['oct2024.csv', 'nov2024.csv', 'dic2024.csv', ...]   # 80 archivos
+
+for archivo in tqdm(archivos, desc='Leyendo archivos'):
+    df = pd.read_csv(archivo)
+    # ...
+```
+
+Salida:
+```
+Leyendo archivos: 100%|████████████| 80/80 [00:12<00:00,  6.4it/s]
+```
+
+Funciona con cualquier iterable — no hace falta cambiar el cuerpo del loop. También se puede combinar con `try/except`:
+
+```python
+for archivo in tqdm(archivos, desc='Procesando', unit='archivo'):
+    try:
+        procesar(archivo)
+    except Exception as e:
+        tqdm.write(f'  ! {archivo}: {e}')   # tqdm.write no rompe la barra
+```
+
 ### Patrón completo: lectura + filtrado + reporte
 
 ```python

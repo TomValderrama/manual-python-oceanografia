@@ -71,7 +71,7 @@ for hoja in hojas_requeridas:
 
 ## Archivos MATLAB (.mat)
 
-Los datos del equipo de oleaje STORM2 (Nortek) se exportan en formato `.mat`. Se leen con `scipy.io`:
+Algunos instrumentos oceanográficos (sensores de oleaje, perfiladores) exportan datos en formato `.mat`. Se leen con `scipy.io`:
 
 ```python
 from scipy.io import loadmat
@@ -100,6 +100,73 @@ def matlab_datenum_a_datetime(datenum):
 
 timestamps = matlab_datenum_a_datetime(tiempo)
 ```
+
+## Archivos YAML
+
+YAML es un formato de configuración más legible que JSON: no usa comillas en los strings simples, admite comentarios con `#`, y su indentación lo hace más natural para estructuras anidadas. Es el estándar para archivos de configuración de proyectos y pipelines.
+
+```bash
+conda install pyyaml    # o: pip install pyyaml
+```
+
+```python
+import yaml
+
+# Leer
+with open('config.yaml', 'r', encoding='utf-8') as f:
+    config = yaml.safe_load(f)    # safe_load evita ejecución de código arbitrario
+
+empresa = config['empresa']
+ruta    = config['rutas']['datos']
+
+# Guardar
+with open('config.yaml', 'w', encoding='utf-8') as f:
+    yaml.dump(config, f, allow_unicode=True, default_flow_style=False)
+```
+
+### config.yaml para un proyecto oceanográfico
+
+```yaml
+# Configuración del proyecto — editar aquí, no en el código
+proyecto:
+  empresa:  "Compas Marine"
+  centro:   "Los Vilos"
+  campana:  "oct2025"
+
+rutas:
+  datos:    "/mnt/c/Users/Usuario/proyectos/los_vilos/datos"
+  figuras:  "/mnt/c/Users/Usuario/proyectos/los_vilos/figuras"
+  informe:  "/mnt/c/Users/Usuario/proyectos/los_vilos/informe"
+
+instrumentos:
+  adcp:
+    archivo:       "corrientes_adcp.csv"
+    profundidades: [3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23]
+  viento:
+    archivo:       "viento_boya.csv"
+
+parametros:
+  velocidad_max_corte: 1.5    # m/s — valores sobre este umbral son outliers
+  suavizado_horas:     1      # ventana de rolling en horas
+```
+
+```python
+# Usar en el pipeline
+import yaml
+from pathlib import Path
+
+with open('config.yaml', 'r', encoding='utf-8') as f:
+    cfg = yaml.safe_load(f)
+
+ruta_datos  = Path(cfg['rutas']['datos'])
+prof_adcp   = cfg['instrumentos']['adcp']['profundidades']
+vel_max     = cfg['parametros']['velocidad_max_corte']
+
+df = pd.read_csv(ruta_datos / cfg['instrumentos']['adcp']['archivo'])
+df = df[df['velocidad'] < vel_max]
+```
+
+La ventaja sobre rutas hardcodeadas: el mismo script corre para cualquier proyecto cambiando solo el `config.yaml`. No hay que tocar el código.
 
 ## Archivos JSON
 
