@@ -19,20 +19,29 @@ Este capítulo compara ambos entornos y explica cómo hacer la transición cuand
 | **Curva de aprendizaje** | Baja | Media |
 | **Instalación** | Anaconda | Descarga + extensión Python |
 
+## La distinción más importante: pipeline interactivo vs estático
+
+La diferencia real entre Spyder y VSCode no es nivel de experiencia — es el tipo de pipeline:
+
+**Pipeline interactivo**: el procesamiento requiere decisiones humanas en el camino. Cargas los datos, inspeccionas, decides dónde cortar la serie, identificas un offset, limpias anomalías, vuelves a graficar. En este flujo, el Variable Explorer de Spyder no es una rueda de entrenamiento — es una herramienta de trabajo. Ver el DataFrame en tiempo real, hacer doble clic para abrirlo como tabla, comparar shapes antes y después de un filtro: todo eso acelera el trabajo de procesamiento interactivo.
+
+**Pipeline estático**: el código corre de principio a fin sin intervención. Leer archivos, procesar, generar figuras, exportar resultados. Aquí Spyder no agrega valor — un script ejecutado desde la terminal de VSCode hace exactamente lo mismo con mejor soporte de proyecto y Git.
+
 ## Cuándo quedarse en Spyder
 
-- Estás aprendiendo Python o explorando un dataset nuevo
-- El flujo de trabajo es principalmente un script con celdas `# %%`
-- El Variable Explorer es parte central de tu trabajo (inspeccionar DataFrames, arrays)
-- El proyecto cabe en uno o dos archivos `.py`
+- El procesamiento requiere inspeccionar y tomar decisiones sobre los datos (offset, recortes, limpieza manual)
+- Usas el Variable Explorer activamente para ver el estado intermedio de arrays y DataFrames
+- El flujo es exploratorio: cargar, graficar, ajustar, volver a graficar
+- Trabajas con un dataset por vez y el script cabe en un archivo
 
-## Cuándo migrar a VSCode
+## Cuándo usar VSCode
 
+- El pipeline corre completo sin intervención (genera figuras, exporta, automatiza)
 - El proyecto tiene varios módulos que se importan entre sí
-- Usas Git activamente y quieres ver diffs sin salir del editor
-- Desarrollas herramientas interactivas con matplotlib (clicks, sliders) y Qt5 te da problemas
+- Usas Git activamente y quieres diffs sin salir del editor
+- Desarrollas herramientas con interfaz (matplotlib interactivo, Qt5) sin conflictos de event loop
 - Necesitas conectarte a un servidor remoto (extensión Remote-SSH)
-- Trabajas con múltiples lenguajes en el mismo proyecto (Python + bash + YAML + Markdown)
+- El código ya está maduro y entra en fase de mantenimiento
 
 ## Configurar VSCode para análisis de datos
 
@@ -119,11 +128,10 @@ La ventaja sobre JupyterLab clásico: el editor de VSCode (autocompletado, Pylan
 
 ## Flujo mixto recomendado
 
-No es necesario elegir uno y abandonar el otro. Un flujo práctico:
+No es necesario elegir uno y abandonar el otro. La combinación más práctica:
 
-1. **Exploración inicial en Spyder**: Variable Explorer + celdas para entender el dataset
-2. **Desarrollo en VSCode**: cuando el código se organiza en funciones y módulos
-3. **Git en VSCode**: commits, diffs, historial
-4. **Scripts finales**: archivos `.py` ejecutables desde terminal, sin depender de ningún IDE
+1. **Procesamiento interactivo en Spyder**: inspeccionar datos, identificar problemas, tomar decisiones (offset, recortes, limpieza). El Variable Explorer hace este trabajo más rápido.
+2. **Pipeline automático en VSCode + terminal**: cuando el procesamiento ya está definido y corre sin intervención. Ejecutar desde terminal, gestionar Git, mantener el proyecto multi-archivo.
+3. **Git en VSCode**: commits, diffs visuales, historial — independientemente de dónde se escribió el código.
 
-El código escrito en Spyder funciona exactamente igual en VSCode y viceversa — son editores, no lenguajes distintos.
+El código funciona igual en ambos entornos. Lo que cambia es qué tan cómodo es cada flujo de trabajo según la etapa del proyecto.
