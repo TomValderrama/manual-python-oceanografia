@@ -154,6 +154,40 @@ profundidades.sort()        # ordena en lugar
 sum(profundidades)          # suma
 ```
 
+## Tuplas
+
+Las tuplas son secuencias **inmutables**: se definen igual que una lista pero con paréntesis, y no se pueden modificar después de creadas.
+
+```python
+coordenadas = (-31.9, -71.5)           # (lat, lon)
+rango       = (0, 23)                  # profundidad mínima y máxima
+rgb         = (30, 144, 255)           # color fijo
+
+# Acceso — igual que lista
+coordenadas[0]    # -31.9
+coordenadas[-1]   # -71.5
+```
+
+**¿Por qué no simplemente usar una lista?** La inmutabilidad comunica intención: si algo es una tupla, el lector del código sabe que ese valor no va a cambiar. También tienen otro uso frecuente: las funciones que devuelven múltiples valores en Python devuelven una tupla.
+
+```python
+def estadisticas(datos):
+    return np.mean(datos), np.std(datos)   # devuelve tupla
+
+media, std = estadisticas(vel)   # desempaquetado automático
+```
+
+```python
+# Diferencia clave con lista
+lista = [1, 2, 3]
+lista[0] = 99       # OK — las listas son mutables
+
+tupla = (1, 2, 3)
+tupla[0] = 99       # TypeError: 'tuple' object does not support item assignment
+```
+
+Se usa para: coordenadas geográficas, rangos fijos de profundidad o tiempo, pares clave-valor, y cualquier conjunto de valores relacionados que no deba cambiar.
+
 ## Diccionarios
 
 Los diccionarios almacenan pares clave-valor. Son muy usados para configuración:

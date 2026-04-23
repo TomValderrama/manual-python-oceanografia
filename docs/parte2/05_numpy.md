@@ -44,6 +44,51 @@ np.arange(0, 24, 2)    # [0, 2, 4, ..., 22]
 np.linspace(0, 1, 50)  # 50 puntos equiespaciados entre 0 y 1
 ```
 
+### dtype — el tipo de los elementos
+
+Cada array tiene un `dtype` que determina qué tipo de número almacena y cuántos bits usa:
+
+```python
+vel = np.array([0.08, 0.09, 0.6, 0.07])
+vel.dtype    # float64 — el default para números decimales
+```
+
+| dtype | Bits | Precisión | Uso típico |
+|---|---|---|---|
+| `float64` | 64 | ~15 dígitos | Default de NumPy, máxima precisión |
+| `float32` | 32 | ~7 dígitos | Archivos NetCDF, ahorra memoria |
+| `int32` | 32 | enteros ±2.1×10⁹ | Índices, contadores |
+| `int64` | 64 | enteros grandes | Timestamps en nanosegundos |
+| `uint8` | 8 | enteros 0–255 | Imágenes (píxeles) |
+
+**Por qué importa**: los archivos NetCDF y muchos instrumentos oceanográficos almacenan datos en `float32` para ahorrar espacio. Cuando los lees con xarray o NumPy, los datos ya vienen como `float32`. Si mezclas `float32` con `float64` en una operación, NumPy promueve todo a `float64` — lo cual está bien, pero puede sorprender.
+
+```python
+# Verificar
+vel.dtype                 # float64
+
+# Especificar al crear
+vel32 = np.array([0.08, 0.09, 0.6], dtype=np.float32)
+vel32.dtype               # float32
+
+# Convertir
+vel32 = vel.astype(np.float32)   # float64 → float32
+vel64 = vel32.astype(np.float64) # float32 → float64
+```
+
+```python
+# Leer desde NetCDF (xarray) — frecuentemente viene como float32
+import xarray as xr
+ds = xr.open_dataset('corrientes.nc')
+ds['velocidad'].dtype    # float32
+
+# Convertir si necesitas precisión para análisis espectral
+vel64 = ds['velocidad'].values.astype(np.float64)
+```
+
+!!! warning "float32 en análisis espectral"
+    La pérdida de precisión de float32 (~7 dígitos) rara vez importa en estadísticas descriptivas. Sí puede importar en análisis espectral o cuando se hacen muchas operaciones encadenadas sobre los mismos datos. En esos casos conviene convertir a float64 antes de calcular.
+
 ### Arrays 2D — matrices
 
 En corrientes se trabaja frecuentemente con matrices de `(tiempo × profundidad)`:
