@@ -209,6 +209,12 @@ Los notebooks tienen desventajas cuando el código madura:
 
 **Regla práctica**: usar Jupyter para explorar y comunicar resultados; convertir el código útil a scripts `.py` para producción.
 
+## PyCharm
+
+PyCharm (JetBrains) es un IDE profesional orientado al desarrollo de software en Python. Tiene herramientas avanzadas de refactoring, depuración y gestión de proyectos que lo hacen muy popular en desarrollo de aplicaciones y backend.
+
+Para análisis de datos y scripting científico no es la primera opción: no tiene Variable Explorer, su curva de aprendizaje es mayor, y la versión completa es de pago (existe una Community Edition gratuita). Se menciona aquí porque es frecuente encontrarlo en tutoriales y comparativas, pero no se cubre en este manual — para el tipo de trabajo que se describe, Spyder y VSCode cubren mejor el espectro.
+
 ## Google Colab
 
 Jupyter en la nube de Google. No requiere instalar nada — solo un navegador y cuenta de Google.
