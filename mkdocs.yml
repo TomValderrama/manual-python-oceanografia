@@ -39,6 +39,7 @@ nav:
     - parte3/08_matplotlib.md
     - parte3/09_rosas_polares.md
     - parte3/10_figuras_informes.md
+    - parte3/10b_graficos_interactivos.md
   - Parte IV — Análisis oceanográfico:
     - parte4/11_estadisticas_circulares.md
     - parte4/12_analisis_espectral.md
