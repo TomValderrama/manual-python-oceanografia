@@ -5,11 +5,15 @@
 set -e
 
 bash generar_pdf.sh
+
+cd ../TomValderrama.github.io
+git pull --rebase
+cd -
+
 mkdocs build --site-dir ../TomValderrama.github.io/manual
 cp Python_de_Extremo_a_Extremo.pdf ../TomValderrama.github.io/manual/
 
 cd ../TomValderrama.github.io
-git pull --rebase
 git add manual/
 git diff --staged --quiet || git commit -m "Actualizar manual"
 git push
