@@ -7,38 +7,24 @@ set -e
 DOCS="docs"
 SALIDA="Python_de_Extremo_a_Extremo.pdf"
 
-# Orden de capítulos
+# Detectar capítulos automáticamente: index.md primero, luego parte*/NN_*.md en orden
 ARCHIVOS=(
   "$DOCS/index.md"
-  "$DOCS/parte1/01_entorno_spyder.md"
-  "$DOCS/parte1/02_sintaxis.md"
-  "$DOCS/parte1/03_control_flujo.md"
-  "$DOCS/parte1/04_funciones_modulos.md"
-  "$DOCS/parte2/05_numpy.md"
-  "$DOCS/parte2/06_pandas.md"
-  "$DOCS/parte2/07_lectura_archivos.md"
-  "$DOCS/parte3/08_matplotlib.md"
-  "$DOCS/parte3/09_rosas_polares.md"
-  "$DOCS/parte3/10_figuras_informes.md"
-  "$DOCS/parte4/11_estadisticas_circulares.md"
-  "$DOCS/parte4/12_analisis_espectral.md"
-  "$DOCS/parte4/13_filtros_interpolacion.md"
-  "$DOCS/parte5/14_python_docx.md"
-  "$DOCS/parte5/15_plantillas_placeholders.md"
-  "$DOCS/parte5/16_importacion_dinamica.md"
-  "$DOCS/parte6/17_rasterio_geopandas.md"
-  "$DOCS/parte6/18_coordenadas_mapas.md"
-  "$DOCS/parte7/19_ocr_batimetria.md"
-  "$DOCS/parte8/20_croco_outputs.md"
-  "$DOCS/parte9/21_sentinel_stac_mgrs.md"
+  $(find "$DOCS" -path "$DOCS/parte*/*.md" | sort)
 )
 
-echo "Generando PDF..."
+# Construir --resource-path desde todas las carpetas parte* que existan
+RESOURCE_PATH="."
+for dir in "$DOCS"/parte*/; do
+  RESOURCE_PATH="$RESOURCE_PATH:$dir"
+done
+
+echo "Generando PDF (${#ARCHIVOS[@]} archivos)..."
 
 pandoc "${ARCHIVOS[@]}" \
   --pdf-engine=xelatex \
   --output="$SALIDA" \
-  --resource-path=".:docs/parte1:docs/parte2:docs/parte3:docs/parte4:docs/parte5:docs/parte6:docs/parte7" \
+  --resource-path="$RESOURCE_PATH" \
   --toc \
   --toc-depth=2 \
   --number-sections \
