@@ -30,6 +30,7 @@ nav:
     - parte1/02_sintaxis.md
     - parte1/03_control_flujo.md
     - parte1/04_funciones_modulos.md
+    - parte1/04b_debugging.md
   - Parte II — Manejo de datos:
     - parte2/05_numpy.md
     - parte2/06_pandas.md
