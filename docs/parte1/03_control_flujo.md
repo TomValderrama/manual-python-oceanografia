@@ -113,6 +113,76 @@ import os
 archivos = [f for f in os.listdir(carpeta) if f.endswith('.xlsx')]
 ```
 
+### zip() — recorrer dos listas en paralelo
+
+`zip()` empareja dos o más listas elemento a elemento. Devuelve pares `(a, b)` mientras duren ambas listas:
+
+```python
+profundidades = [3, 5, 7, 9]
+velocidades   = [0.08, 0.12, 0.60, 0.07]
+
+for prof, vel in zip(profundidades, velocidades):
+    print(f"{prof} m → {vel:.2f} m/s")
+
+# También funciona para construir un diccionario
+prof_vel = dict(zip(profundidades, velocidades))
+# {3: 0.08, 5: 0.12, 7: 0.6, 9: 0.07}
+```
+
+Si las listas tienen distinto largo, `zip` se detiene en la más corta — sin error, sin aviso.
+
+## Dict comprehensions
+
+Las comprehensions también funcionan para diccionarios:
+
+```python
+profundidades = [3, 5, 7, 9, 11]
+velocidades   = [0.08, 0.12, 0.60, 0.07, 0.09]
+
+# Diccionario profundidad → velocidad
+prof_vel = {prof: vel for prof, vel in zip(profundidades, velocidades)}
+# {3: 0.08, 5: 0.12, 7: 0.6, 9: 0.07, 11: 0.09}
+
+# Filtrado: solo profundidades con velocidad alta
+alertas = {prof: vel for prof, vel in prof_vel.items() if vel > 0.5}
+# {7: 0.6}
+```
+
+La forma `{clave: valor for ... in ...}` es análoga a la list comprehension `[valor for ... in ...]` pero produce un diccionario en vez de una lista.
+
+## any() y all()
+
+Dos funciones que verifican condiciones sobre listas o arrays enteros, sin escribir un loop:
+
+```python
+velocidades = [0.08, 0.12, 0.60, 0.07, 0.09]
+
+any(v > 0.5 for v in velocidades)   # True — ¿alguno supera 0.5?
+all(v > 0.0 for v in velocidades)   # True — ¿todos son positivos?
+all(v < 1.0 for v in velocidades)   # True — ¿ninguno supera 1 m/s?
+```
+
+Con NumPy/Pandas el resultado es directo sin el generador:
+
+```python
+import numpy as np
+vel = np.array([0.08, 0.12, 0.60, 0.07])
+
+np.any(vel > 0.5)   # True
+np.all(vel > 0.0)   # True
+
+# Con pandas Series
+(df['velocidad'] > 0.5).any()   # True si alguna fila cumple
+(df['velocidad'] > 0.0).all()   # True si todas las filas cumplen
+```
+
+Muy útil para validar datos antes de procesarlos:
+
+```python
+assert (df['velocidad'] >= 0).all(), "Hay velocidades negativas — revisar datos"
+assert df['tiempo'].notna().all(),   "Hay timestamps nulos"
+```
+
 ## Manejo de errores: try / except
 
 Fundamental cuando se leen archivos o datos que pueden estar incompletos o corruptos:

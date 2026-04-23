@@ -193,6 +193,83 @@ patron_diurno = df.groupby(df.index.hour)['velocidad'].mean()
 patron_diurno.index.name = 'hora'
 ```
 
+### groupby con múltiples agregaciones
+
+Cuando se necesita calcular varias estadísticas a la vez, `agg` acepta un diccionario con nombre de salida y función:
+
+```python
+resumen = df.groupby('profundidad')['velocidad'].agg(
+    media='mean',
+    maxima='max',
+    p95=lambda x: x.quantile(0.95),
+    n_datos='count'
+)
+```
+
+Esto devuelve un DataFrame con una columna por estadística, nombrada explícitamente — más claro que encadenar varias llamadas separadas.
+
+```python
+# Agrupar por dos columnas a la vez
+df.groupby(['profundidad', df.index.month])['velocidad'].mean()
+# → media por cada combinación (profundidad, mes)
+```
+
+## Rolling — ventana deslizante
+
+`rolling` aplica una función sobre una ventana móvil de N filas. Es la forma estándar de suavizar series temporales y calcular estadísticas en un intervalo de tiempo deslizante.
+
+```python
+# Suavizado: media móvil de 1 hora (datos cada 10 min → ventana de 6 puntos)
+df['vel_suavizada'] = df['velocidad'].rolling(window=6).mean()
+
+# La ventana es centrada por defecto hacia atrás:
+# el valor en t es la media de [t-5, t-4, t-3, t-2, t-1, t]
+# Las primeras N-1 filas serán NaN porque no hay suficientes datos previos
+```
+
+Con series temporales de frecuencia regular, es más claro usar el tamaño de ventana en tiempo:
+
+```python
+df['vel_suavizada'] = df['velocidad'].rolling('1h').mean()    # media de 1 hora
+df['vel_suavizada'] = df['velocidad'].rolling('6h').mean()    # media de 6 horas
+df['std_movil']     = df['velocidad'].rolling('1D').std()     # std diaria móvil
+```
+
+```python
+# Percentil 95 móvil — más pesado pero válido
+df['p95_movil'] = df['velocidad'].rolling('7D').quantile(0.95)
+```
+
+!!! tip "Cuándo suavizar"
+    Los datos de ADCP tienen ruido acústico y efectos de ondas superficiales. Una media móvil de 10–60 minutos elimina variabilidad de alta frecuencia sin afectar la señal de corriente. No suavizar antes de hacer estadísticas mensuales — eso puede sesgar los resultados.
+
+## pd.cut — crear intervalos
+
+`pd.cut` divide una columna continua en intervalos (bins) y asigna una etiqueta a cada valor. Se usa para construir tablas de incidencia (velocidad × dirección) y estadísticas por rango de profundidad.
+
+```python
+# Crear intervalos de velocidad: 0-0.1, 0.1-0.25, 0.25-0.5, 0.5-1.0 m/s
+bins   = [0, 0.1, 0.25, 0.5, 1.0]
+labels = ['calma', 'leve', 'moderada', 'fuerte']
+
+df['intervalo_vel'] = pd.cut(df['velocidad'], bins=bins, labels=labels)
+```
+
+```python
+# Número de intervalos iguales — pandas elige los límites automáticamente
+df['quintil_vel'] = pd.cut(df['velocidad'], bins=5)
+
+# pd.qcut — misma cantidad de datos en cada intervalo (cuantiles)
+df['cuartil_vel'] = pd.qcut(df['velocidad'], q=4, labels=['Q1','Q2','Q3','Q4'])
+```
+
+Una vez que cada dato tiene su etiqueta de intervalo, se puede agrupar:
+
+```python
+df.groupby('intervalo_vel')['velocidad'].count()   # frecuencia por intervalo
+df.groupby('intervalo_vel')['velocidad'].mean()    # media dentro de cada rango
+```
+
 ## pivot_table — tabla de frecuencias
 
 Las tablas de incidencia (velocidad × dirección) del informe se generan con pivot_table:
@@ -214,13 +291,54 @@ tabla_pct = tabla / tabla.values.sum() * 100
 
 ## merge y concat — combinar DataFrames
 
+### concat — apilar filas
+
 ```python
-# Concatenar DataFrames con la misma estructura (unir registros)
+# Misma estructura, distintos períodos — apilar verticalmente
 df_total = pd.concat([df_septiembre, df_octubre, df_noviembre])
 
-# Merge por columna común (equivalente a JOIN de SQL)
-df_merged = pd.merge(df_corrientes, df_oleaje, on='tiempo', how='inner')
+# Si los índices originales se repiten, resetear
+df_total = pd.concat([df_sep, df_oct, df_nov], ignore_index=True)
+
+# Para saber de qué DataFrame vino cada fila
+df_total = pd.concat(
+    [df_sep, df_oct, df_nov],
+    keys=['sep', 'oct', 'nov']
+)
 ```
+
+### merge — combinar por columna común
+
+`merge` une dos DataFrames que comparten una columna clave. El parámetro `how` controla qué filas se conservan cuando no hay match:
+
+```python
+# inner (default): solo las filas que existen en ambos
+df = pd.merge(df_corrientes, df_oleaje, on='tiempo', how='inner')
+
+# left: todas las filas de df_corrientes, NaN donde no hay oleaje
+df = pd.merge(df_corrientes, df_oleaje, on='tiempo', how='left')
+
+# outer: todas las filas de ambos, NaN donde falta alguno
+df = pd.merge(df_corrientes, df_oleaje, on='tiempo', how='outer')
+```
+
+```
+df_corrientes    df_oleaje        inner merge       left merge
+─────────────    ──────────       ────────────      ──────────
+tiempo  vel      tiempo  Hm0      tiempo  vel  Hm0  tiempo  vel  Hm0
+10:00   0.3      10:00   1.2      10:00   0.3  1.2  10:00   0.3  1.2
+10:10   0.4      10:20   0.8      10:20   0.5  0.8  10:10   0.4  NaN
+10:20   0.5                                         10:20   0.5  0.8
+```
+
+```python
+# Si las columnas clave tienen distinto nombre
+df = pd.merge(df_corrientes, df_viento,
+              left_on='tiempo_adcp', right_on='tiempo_boya',
+              how='left')
+```
+
+**Regla práctica**: usar `left` cuando el DataFrame izquierdo es el principal y el derecho agrega información complementaria que puede no estar para todos los instantes. Usar `inner` cuando solo interesan los instantes donde hay datos de ambos instrumentos.
 
 ## Manejar NaN
 

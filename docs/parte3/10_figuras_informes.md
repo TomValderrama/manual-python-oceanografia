@@ -161,5 +161,87 @@ fig.savefig('serie_oleaje.png', dpi=150, bbox_inches='tight')
 plt.close(fig)
 ```
 
+## GridSpec — layouts complejos
+
+`subplots` crea paneles de igual tamaño. Cuando se necesita que algunos paneles sean más anchos o altos que otros, se usa `GridSpec`:
+
+```python
+import matplotlib.gridspec as gridspec
+
+fig = plt.figure(figsize=(14, 8))
+gs  = gridspec.GridSpec(2, 3, figure=fig, hspace=0.35, wspace=0.4)
+
+# Panel grande a la izquierda (ocupa toda la columna 0)
+ax_serie  = fig.add_subplot(gs[:, 0])    # filas 0:2, columna 0
+
+# Dos paneles pequeños a la derecha
+ax_hist   = fig.add_subplot(gs[0, 1:])  # fila 0, columnas 1-2
+ax_rosa   = fig.add_subplot(gs[1, 1:], projection='polar')  # fila 1, columnas 1-2
+```
+
+```python
+# Layout con ratios de tamaño explícitos
+gs = gridspec.GridSpec(
+    3, 1,
+    height_ratios=[3, 1, 1],   # panel superior 3× más alto que los otros dos
+    hspace=0.05
+)
+ax_vel = fig.add_subplot(gs[0])
+ax_dir = fig.add_subplot(gs[1], sharex=ax_vel)
+ax_qc  = fig.add_subplot(gs[2], sharex=ax_vel)
+```
+
+## Twin axes — dos escalas en el mismo panel
+
+Cuando se grafican dos variables con distinta escala en el mismo panel (por ejemplo, velocidad y temperatura), se usa un eje secundario:
+
+```python
+fig, ax1 = plt.subplots(figsize=(12, 4))
+
+# Eje izquierdo: velocidad
+ax1.plot(df.index, df['velocidad'], color='steelblue', linewidth=0.8, label='Velocidad')
+ax1.set_ylabel('Velocidad (m/s)', color='steelblue')
+ax1.tick_params(axis='y', labelcolor='steelblue')
+
+# Eje derecho: temperatura — comparte el eje X
+ax2 = ax1.twinx()
+ax2.plot(df.index, df['temperatura'], color='firebrick', linewidth=0.8,
+         linestyle='--', label='Temperatura')
+ax2.set_ylabel('Temperatura (°C)', color='firebrick')
+ax2.tick_params(axis='y', labelcolor='firebrick')
+
+# Leyenda combinada de ambos ejes
+lineas1, labels1 = ax1.get_legend_handles_labels()
+lineas2, labels2 = ax2.get_legend_handles_labels()
+ax1.legend(lineas1 + lineas2, labels1 + labels2, loc='upper left')
+
+fig.tight_layout()
+```
+
+!!! warning "Cuándo no usar twin axes"
+    Dos ejes con distinta escala en el mismo panel pueden inducir correlaciones visuales falsas — el lector ve las curvas cruzarse o alinearse dependiendo de cómo se elijan las escalas. Preferir paneles separados con `sharex=True` cuando las variables son independientes. Reservar `twinx` para cuando la relación entre las dos variables es el punto central de la figura.
+
+## Tamaño de figura para Word
+
+El ancho de la zona de texto de un documento Word A4 con márgenes estándar es **~15.5 cm**. Para que las figuras queden alineadas y a escala correcta al insertarlas:
+
+```python
+# Figura de ancho completo (serie temporal, heatmap)
+fig, ax = plt.subplots(figsize=(15.5/2.54, 5/2.54))   # cm → pulgadas (/2.54)
+
+# Figura de media página (rosa, histograma)
+fig, ax = plt.subplots(figsize=(7.5/2.54, 7.5/2.54))
+
+# Guardar siempre con bbox_inches='tight' para no perder espacio en blanco
+fig.savefig('figura.png', dpi=150, bbox_inches='tight', facecolor='white')
+```
+
+```python
+# Función utilitaria para convertir cm a pulgadas
+def cm(x): return x / 2.54
+
+fig, ax = plt.subplots(figsize=(cm(15.5), cm(6)))
+```
+
 !!! tip "Cuándo usar `sharex=True`"
     En series temporales con múltiples variables (Hm0, Tm, Dm), `sharex=True` sincroniza el zoom y el paneo entre paneles. Si el usuario hace zoom en un panel en Spyder, todos los demás se actualizan juntos.
