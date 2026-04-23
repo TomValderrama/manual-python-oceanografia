@@ -4,6 +4,60 @@ Spyder es el mejor punto de partida para análisis de datos: es simple, tiene Va
 
 Este capítulo compara ambos entornos y explica cómo hacer la transición cuando conviene.
 
+## Por qué este manual usa Spyder y no Jupyter
+
+Jupyter es muy popular en ciencia de datos, y es probable que lo encuentres en tutoriales y papers. Sin embargo, para el tipo de trabajo que cubre este manual — pipelines de procesamiento, automatización de informes, análisis reproducibles — Spyder con scripts `.py` tiene ventajas concretas sobre notebooks `.ipynb`.
+
+**El problema de estado de los notebooks**
+
+En Jupyter, las celdas se pueden ejecutar en cualquier orden. Esto crea "estado oculto": variables que existen en memoria de corridas anteriores, resultados que dependen del orden en que ejecutaste las celdas, comportamiento que no se puede reproducir corriendo el notebook de arriba a abajo. En un análisis corto de exploración no importa; en un pipeline de producción es una fuente de errores difíciles de detectar.
+
+```python
+# Celda 1
+df = pd.read_csv('datos.csv')
+
+# Celda 3 (ejecutada antes que la 2)
+df = df[df['velocidad'] > 0]   # modifica df
+
+# Celda 2 (ejecutada después)
+print(len(df))   # resultado depende del orden de ejecución
+```
+
+En un script `.py` de Spyder el código siempre corre de arriba a abajo. El estado es predecible.
+
+**Los scripts `.py` son importables, los notebooks no**
+
+Cuando el código madura, se organiza en funciones que se reutilizan entre proyectos. Un script `.py` se puede importar directamente:
+
+```python
+from utils import calcular_media_vectorial
+```
+
+Un notebook `.ipynb` no se puede importar sin conversión previa. Esto hace que el código de un notebook quede "atrapado" en él.
+
+**Git funciona bien con `.py`, mal con `.ipynb`**
+
+Los archivos `.ipynb` incluyen los outputs (gráficos, tablas) dentro del archivo JSON. Un `git diff` de un notebook modificado es ilegible. Con scripts `.py`, los diffs son limpios y el historial de cambios es útil.
+
+**Spyder da lo mismo que Jupyter en lo útil**
+
+Lo que hace atractivo a Jupyter para análisis interactivo — ejecutar código por secciones, ver resultados inmediatamente, inspeccionar variables — también lo tiene Spyder:
+
+| Jupyter | Spyder equivalente |
+|---|---|
+| Celdas de código | Celdas `# %%` |
+| Output inline | Consola IPython |
+| Variable inspector | Variable Explorer (más completo) |
+| Narrativa en Markdown | Comentarios en el código |
+
+La diferencia es que en Spyder el código vive en un archivo `.py` limpio, no en un JSON con outputs embebidos.
+
+**Cuándo sí usar Jupyter**
+
+Jupyter tiene ventajas reales para comunicar resultados: mezclar texto explicativo, código y gráficos en un documento que otros pueden leer y re-ejecutar. Es el formato estándar para papers reproducibles y tutoriales. Si el objetivo es compartir un análisis con alguien que no va a modificar el código, un notebook bien hecho es ideal. Si el objetivo es construir un pipeline que procese datos y se mantenga en el tiempo, un script `.py` es mejor.
+
+---
+
 ## Comparativa directa
 
 | | Spyder | VSCode |
