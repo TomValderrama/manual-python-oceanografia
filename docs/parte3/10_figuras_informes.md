@@ -163,6 +163,3 @@ plt.close(fig)
 
 !!! tip "Cuándo usar `sharex=True`"
     En series temporales con múltiples variables (Hm0, Tm, Dm), `sharex=True` sincroniza el zoom y el paneo entre paneles. Si el usuario hace zoom en un panel en Spyder, todos los demás se actualizan juntos.
-
-!!! tip "Spyder"
-    `Ctrl + 1` comenta o descomenta la selección. `Ctrl + 2` inserta un separador de celda `# %%` en la posición del cursor.

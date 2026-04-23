@@ -244,6 +244,3 @@ list((1, 2, 3))  # [1, 2, 3]
 
 !!! warning "Error frecuente"
     En Python 3, dividir dos enteros siempre devuelve float: `7 / 2 = 3.5`. Para división entera usa `//`.
-
-!!! tip "Spyder"
-    `Ctrl + 1` comenta o descomenta la selección. `Ctrl + 2` inserta un separador de celda `# %%` en la posición del cursor.

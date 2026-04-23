@@ -173,6 +173,3 @@ if __name__ == '__main__':
 
 !!! tip "Alternativa con JSON"
     Si la configuración es puramente datos (sin paths que necesiten `Path` o expresiones Python), se puede guardar como JSON y cargar con `json.load`. La ventaja de módulos `.py` es que permiten expresiones, herencia entre configs y paths relativos calculados con `Path(__file__).parent`.
-
-!!! tip "Spyder"
-    `Ctrl + 1` comenta o descomenta la selección. `Ctrl + 2` inserta un separador de celda `# %%` en la posición del cursor.

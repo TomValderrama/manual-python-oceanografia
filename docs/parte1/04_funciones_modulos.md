@@ -203,6 +203,3 @@ Para compartir datos entre funciones, lo correcto es usar el valor de retorno, n
 
 !!! tip "Buena práctica"
     Escribe funciones pequeñas que hagan una sola cosa. Es más fácil probarlas, reutilizarlas y entenderlas. Si una función supera las 50 líneas, probablemente conviene dividirla.
-
-!!! tip "Spyder"
-    `Ctrl + 1` comenta o descomenta la selección. `Ctrl + 2` inserta un separador de celda `# %%` en la posición del cursor.

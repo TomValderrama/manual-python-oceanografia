@@ -229,6 +229,3 @@ np.round(3.14159, 2)               # 3.14
 
 !!! tip "NumPy vs listas de Python"
     Para operaciones matemáticas sobre grandes conjuntos de datos, NumPy es entre 10 y 100 veces más rápido que un loop sobre una lista Python. En series temporales de 6 meses con datos cada 10 minutos (~26.000 registros), esa diferencia es significativa.
-
-!!! tip "Spyder"
-    `Ctrl + 1` comenta o descomenta la selección. `Ctrl + 2` inserta un separador de celda `# %%` en la posición del cursor.

@@ -306,6 +306,3 @@ plt.show()
     # Cargar al reiniciar:
     # with open('sesion.json') as f: pts_unicos = json.load(f)
     ```
-
-!!! tip "Spyder"
-    `Ctrl + 1` comenta o descomenta la selección. `Ctrl + 2` inserta un separador de celda `# %%` en la posición del cursor.

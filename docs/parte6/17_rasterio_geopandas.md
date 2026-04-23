@@ -170,6 +170,3 @@ for area, s in zip(areas_estudio.itertuples(), stats):
 
 !!! warning "Archivos shapefile"
     Un shapefile en realidad son varios archivos (`.shp`, `.shx`, `.dbf`, `.prj`). Al copiar o mover shapefiles, mover todos los archivos con el mismo nombre base. La alternativa moderna y más portable es GeoPackage (`.gpkg`) o GeoJSON.
-
-!!! tip "Spyder"
-    `Ctrl + 1` comenta o descomenta la selección. `Ctrl + 2` inserta un separador de celda `# %%` en la posición del cursor.
