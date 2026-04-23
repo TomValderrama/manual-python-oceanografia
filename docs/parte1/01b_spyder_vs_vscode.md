@@ -196,3 +196,23 @@ No es necesario elegir uno y abandonar el otro. La combinación más práctica:
 3. **Git en VSCode**: commits, diffs visuales, historial — independientemente de dónde se escribió el código.
 
 El código funciona igual en ambos entornos. Lo que cambia es qué tan cómodo es cada flujo de trabajo según la etapa del proyecto.
+
+### Cuándo salir del IDE y correr desde terminal
+
+Hay casos en que Spyder y VSCode se interponen en vez de ayudar:
+
+- **Script con menú de procesamiento** (`input()` en un loop): Spyder ejecuta en un kernel IPython que no maneja bien la entrada interactiva en modo batch.
+- **GUI propia con matplotlib o Tkinter**: el IDE ya tiene un event loop corriendo; abrir otro genera conflictos. TkAgg suele funcionar en Spyder con `%matplotlib tk`, pero Qt5Agg frecuentemente no.
+- **Combinación de ambos** (menú + ventana gráfica): ningún backend funciona de forma confiable dentro del IDE.
+
+En esos casos la solución es correr el script directamente desde una terminal:
+
+```bash
+# PowerShell o cmd (usa el Python de Windows, TkAgg nativo)
+python mi_script.py
+
+# Terminal WSL (requiere WSLg en Windows 11, o un servidor X en Windows 10)
+python mi_script.py
+```
+
+El script toma control del proceso completo: puede pedir input, abrir ventanas y cerrarlas sin conflicto con el IDE. Ver cap. 10b para el patrón `plt.ion()` + `plt.pause()` que permite combinar un menú de texto con figuras interactivas.

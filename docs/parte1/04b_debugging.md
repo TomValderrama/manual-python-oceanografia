@@ -180,11 +180,11 @@ type(resultado)
 
 ## Estrategias de debugging
 
-### 1. Leer el error antes de buscar en Google
+### Leer el error antes de buscar en Google
 
 El mensaje de error dice exactamente qué pasó y dónde. `KeyError: 'velocidad'` es más útil que buscar "pandas error". Leer el traceback completo toma 10 segundos y frecuentemente resuelve el problema.
 
-### 2. Reducir el problema
+### Reducir el problema
 
 Si el error ocurre en un loop que procesa 100 archivos, ejecutar primero con uno solo:
 
@@ -197,7 +197,7 @@ for archivo in archivos:
 procesar(archivos[0])
 ```
 
-### 3. Imprimir el estado intermedio
+### Imprimir el estado intermedio
 
 El método más simple y más efectivo:
 
@@ -211,7 +211,7 @@ def procesar(df):
     return resultado
 ```
 
-### 4. Verificar suposiciones
+### Verificar suposiciones
 
 Los errores frecuentemente ocurren porque el dato no tiene el formato que se espera:
 
@@ -222,7 +222,7 @@ print(df['velocidad'].dtype)           # ¿numpy float o object?
 print(df.index[:3])                    # ¿cómo se ve el índice?
 ```
 
-### 5. `assert` para detectar condiciones inesperadas
+### `assert` para detectar condiciones inesperadas
 
 ```python
 df = pd.read_csv('datos.csv')
