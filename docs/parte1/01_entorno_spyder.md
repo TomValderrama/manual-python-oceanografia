@@ -1,4 +1,19 @@
-# Entorno Spyder
+# Entorno de desarrollo
+
+Python se puede escribir y ejecutar desde varios entornos. Cada uno tiene un perfil distinto — la elección depende del tipo de tarea y del momento del proyecto.
+
+## Comparativa de entornos
+
+| Entorno | Mejor para | Instalación |
+|---|---|---|
+| **Spyder** | Análisis interactivo, explorar datos, perfil científico | Anaconda |
+| **VSCode** | Proyectos multi-archivo, Git, scripts de producción | Descarga directa |
+| **JupyterLab** | Reportes con código + texto, compartir resultados | `pip install jupyterlab` |
+| **Google Colab** | Sin instalación, acceso a GPU, colaboración | Solo navegador |
+
+Este capítulo se enfoca en **Spyder**, que es el más adecuado para empezar: tiene Variable Explorer integrado, permite ejecutar código por secciones y está diseñado específicamente para análisis de datos. Las secciones al final del capítulo describen cuándo conviene cambiar a VSCode o Jupyter.
+
+## Spyder
 
 Spyder es el entorno de desarrollo recomendado para análisis científico en Python. A diferencia de otros editores, está diseñado específicamente para trabajar con datos: tiene un explorador de variables integrado, una consola interactiva y permite ejecutar código por secciones.
 
@@ -140,3 +155,67 @@ Otra causa de ventanas que "se congelan": si el script hace procesamiento pesado
 
 !!! tip "Recomendación"
     Usar **Inline** como predeterminado en Spyder. Cambiar a **Tkinter** cuando se necesita interactividad. Qt5 solo tiene ventaja real si se construye una interfaz con botones o controles propios, y en ese caso es mejor trabajar en VSCode o en un script independiente fuera de Spyder.
+
+## VSCode
+
+Visual Studio Code es un editor de propósito general con soporte de primera clase para Python. No está diseñado específicamente para análisis de datos, pero tiene ventajas claras cuando el proyecto crece.
+
+**Instalar**: [code.visualstudio.com](https://code.visualstudio.com). Luego instalar la extensión **Python** (Microsoft) y opcionalmente **Pylance** para autocompletado avanzado.
+
+### Ventajas sobre Spyder
+
+- **Editor más potente**: autocompletado inteligente entre archivos, ir a definición entre módulos, refactoring, buscar y reemplazar en todo el proyecto
+- **Git integrado**: diff visual, historial de commits, blame por línea, sin salir del editor
+- **Terminal real**: bash/WSL integrado directamente, útil para correr scripts, git, pandoc
+- **Multi-archivo**: navegación entre archivos de un paquete Python es mucho más fluida
+- **Sin conflicto Qt5**: VSCode usa Electron (no Qt), por lo que el backend Qt5Agg de matplotlib funciona sin interferencias
+- **Extensiones**: SSH remoto (trabajar en servidores Linux), Jupyter, Docker, soporte para otros lenguajes en el mismo proyecto
+
+### Cuándo conviene migrar a VSCode
+
+- El proyecto tiene varios archivos `.py` que se importan entre sí
+- Se trabaja con Git activamente
+- Se desarrolla una herramienta con interfaz interactiva (matplotlib + clicks, sliders)
+- Se necesita conectarse a un servidor remoto (cluster para CROCO, por ejemplo)
+
+### Variable Explorer en VSCode
+
+VSCode no tiene un Variable Explorer tan completo como Spyder. La alternativa es usar el modo **Jupyter** (celdas `# %%` con el kernel interactivo), que muestra variables y permite inspeccionarlas. Para DataFrames, `df.head()` o `df.describe()` en la terminal interactiva cumplen el mismo rol.
+
+## JupyterLab y Jupyter Notebook
+
+Jupyter permite mezclar código Python, texto explicativo (Markdown) y resultados (gráficos, tablas) en un mismo documento interactivo llamado **notebook** (`.ipynb`).
+
+```bash
+pip install jupyterlab
+jupyter lab   # abre en el navegador
+```
+
+### Cuándo usar Jupyter
+
+- **Exploración inicial de datos nuevos**: ver los datos, graficar, entender la estructura
+- **Reportes reproducibles**: compartir análisis donde el lector puede ver el código y los resultados juntos
+- **Tutoriales y documentación**: la mayoría de tutoriales de xarray, pandas, geopandas están en notebooks
+- **Colaboración**: Google Colab permite compartir y ejecutar notebooks sin instalar nada
+
+### Limitaciones de Jupyter para producción
+
+Los notebooks tienen desventajas cuando el código madura:
+
+- El orden de ejecución de celdas puede ser arbitrario — un notebook con celdas ejecutadas fuera de orden produce resultados incorrectos sin avisar
+- Difíciles de versionar con Git (el formato `.ipynb` incluye outputs, lo que genera diffs enormes)
+- No se pueden importar como módulos desde otros scripts
+- La refactorización y navegación entre archivos es más limitada
+
+**Regla práctica**: usar Jupyter para explorar y comunicar resultados; convertir el código útil a scripts `.py` para producción.
+
+## Google Colab
+
+Jupyter en la nube de Google. No requiere instalar nada — solo un navegador y cuenta de Google.
+
+- URL: [colab.research.google.com](https://colab.research.google.com)
+- Acceso gratuito a GPU (útil para modelos de deep learning o procesamiento de imágenes pesado)
+- Se integra con Google Drive para leer y guardar archivos
+- Ideal para compartir análisis con alguien que no tiene Python instalado
+
+La limitación principal: la sesión se desconecta después de un tiempo de inactividad y los datos temporales se pierden. Para trabajo continuo es mejor un entorno local.
