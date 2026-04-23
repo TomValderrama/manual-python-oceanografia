@@ -50,3 +50,7 @@ nav:
     - parte6/18_coordenadas_mapas.md
   - Parte VII — Visión artificial:
     - parte7/19_ocr_batimetria.md
+  - Parte VIII — Modelos numéricos oceánicos:
+    - parte8/20_croco_outputs.md
+  - Parte IX — Datos satelitales:
+    - parte9/21_sentinel_stac_mgrs.md
