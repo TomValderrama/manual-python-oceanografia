@@ -120,5 +120,23 @@ También se puede cambiar el backend por sesión desde la consola sin tocar las 
 | Revisar figura con zoom o hacer clics sobre ella | Tkinter |
 | Script automático que solo guarda PNG | `matplotlib.use('Agg')` antes de importar pyplot |
 
+### Tkinter vs Qt5 — por qué Tkinter es más estable en Spyder
+
+Spyder está construido sobre Qt5 (PyQt5). Cuando se usa el backend Qt5Agg, matplotlib intenta crear ventanas Qt5 dentro del mismo event loop que ya está usando Spyder — pueden producirse conflictos, ventanas lentas o cierres inesperados.
+
+Tkinter tiene su propio event loop completamente independiente de Qt, por eso no interfiere con Spyder.
+
+En **VSCode** este problema no existe: VSCode está hecho en Electron (Chromium), no en Qt. El backend Qt5Agg abre ventanas Qt5 de forma independiente y funciona sin conflictos.
+
+Otra causa de ventanas que "se congelan": si el script hace procesamiento pesado (imágenes, OCR, cálculos largos) en el mismo hilo que la ventana gráfica, el event loop no puede responder a clics mientras Python está ocupado. Esto ocurre con cualquier backend, pero Qt5 lo manifiesta más visiblemente.
+
+| | Tkinter | Qt5 |
+|---|---|---|
+| Integración con Spyder | Sin conflictos | Puede interferir con el event loop |
+| Integración con VSCode | Bien | Bien |
+| Peso | Liviano, incluido en Python | Pesado, requiere PyQt5/PySide2 |
+| Widgets interactivos | Básicos (zoom, pan, guardar) | Avanzados (sliders, botones personalizados) |
+| Uso recomendado | Backend interactivo general | Herramientas con interfaz propia |
+
 !!! tip "Recomendación"
-    Usar **Inline** como predeterminado. Cambiar a **Tkinter** cuando se necesita interactividad (zoom, edición de puntos, inspector de coordenadas). Qt5 solo vale la pena si Tkinter falla o se necesitan widgets más complejos.
+    Usar **Inline** como predeterminado en Spyder. Cambiar a **Tkinter** cuando se necesita interactividad. Qt5 solo tiene ventaja real si se construye una interfaz con botones o controles propios, y en ese caso es mejor trabajar en VSCode o en un script independiente fuera de Spyder.
