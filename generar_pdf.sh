@@ -14,8 +14,8 @@ ARCHIVOS=(
   "$DOCS/glosario.md"
 )
 
-# Construir --resource-path desde todas las carpetas parte* que existan
-RESOURCE_PATH="."
+# Construir --resource-path desde todas las carpetas parte* que existan, más docs/img
+RESOURCE_PATH=".:$DOCS/img"
 for dir in "$DOCS"/parte*/; do
   RESOURCE_PATH="$RESOURCE_PATH:$dir"
 done
