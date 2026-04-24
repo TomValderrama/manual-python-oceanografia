@@ -110,6 +110,50 @@ nombre = f"Profundidad: {7}"          # OK con f-string (convierte automático)
 7 * 2.0    # 14.0 (float)
 ```
 
+## El punto (.) en Python
+
+El punto es el operador de acceso en Python. Aparece constantemente pero tiene tres usos distintos que conviene distinguir desde el principio.
+
+**1. Acceso a módulo** — llama una función o clase que vive dentro de un módulo importado:
+
+```python
+import numpy as np
+import pandas as pd
+
+np.array([1, 2, 3])      # función array del módulo numpy
+pd.read_csv('datos.csv') # función read_csv del módulo pandas
+```
+
+**2. Método de objeto** — ejecuta una función que pertenece a un objeto específico (los paréntesis indican que es una llamada):
+
+```python
+velocidades = [0.3, 0.8, 0.1, 0.5]
+velocidades.append(0.6)    # método append de la lista
+velocidades.sort()         # método sort de la lista
+
+df['vel'].mean()           # método mean de la Series de pandas
+df.dropna()                # método dropna del DataFrame
+```
+
+**3. Atributo de objeto** — accede a una propiedad del objeto, sin llamarla (sin paréntesis):
+
+```python
+df.shape       # (filas, columnas) — es un dato, no una función
+df.columns     # lista de nombres de columnas
+arr.dtype      # tipo de dato del array NumPy
+```
+
+La diferencia entre método y atributo: si tiene paréntesis `()` es una llamada que ejecuta algo; si no los tiene es una propiedad que ya existe.
+
+**Encadenamiento** — se pueden combinar varios niveles en una sola línea:
+
+```python
+doc.paragraphs[2].runs[0].text   # atributo del objeto dentro de una lista dentro de otro objeto
+df['vel'].dropna().mean()        # método sobre el resultado de otro método
+```
+
+En MATLAB no existe este patrón — las funciones son independientes (`mean(vel)`, `size(df)`). En Python los objetos llevan sus propias funciones consigo.
+
 ## Strings (texto)
 
 ```python
@@ -142,10 +186,10 @@ Las listas almacenan secuencias de elementos de cualquier tipo:
 profundidades = [3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23]
 meses = ["sep", "oct", "nov", "dic", "ene", "feb", "mar"]
 
-# Acceso por índice (empieza en 0)
-profundidades[0]    # 3
-profundidades[-1]   # 23 (último)
-profundidades[2:5]  # [7, 9, 11] (slice)
+# Acceso por índice (empieza en 0, no en 1 como MATLAB)
+profundidades[0]    # 3   — primer elemento
+profundidades[-1]   # 23  — último elemento
+profundidades[-2]   # 21  — penúltimo
 
 # Operaciones
 len(profundidades)          # 11
@@ -153,6 +197,37 @@ profundidades.append(25)    # agrega al final
 profundidades.sort()        # ordena en lugar
 sum(profundidades)          # suma
 ```
+
+### Slicing — seleccionar rangos
+
+La sintaxis es `[inicio:fin:paso]`. El índice `fin` **no se incluye**:
+
+```python
+p = [3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23]
+#    0  1  2  3   4   5   6   7   8   9  10
+
+p[2:5]    # [7, 9, 11]      — índices 2, 3, 4 (el 5 no entra)
+p[:4]     # [3, 5, 7, 9]    — desde el inicio hasta el índice 3
+p[7:]     # [17, 19, 21, 23] — desde el índice 7 hasta el final
+p[::2]    # [3, 7, 11, 15, 19, 23] — uno de cada dos (paso 2)
+p[::-1]   # [23, 21, ..., 3]       — invertir la lista
+```
+
+En NumPy y pandas el slicing funciona igual y se puede aplicar a filas y columnas:
+
+```python
+import numpy as np
+
+A = np.array([[1, 2, 3, 4],
+              [5, 6, 7, 8],
+              [9, 10, 11, 12]])
+
+A[0, :]      # [1, 2, 3, 4]   — primera fila, todas las columnas
+A[:, 1]      # [2, 6, 10]     — todas las filas, columna 1
+A[0:2, 1:3]  # [[2,3],[6,7]]  — filas 0-1, columnas 1-2
+```
+
+El equivalente en MATLAB sería `A(1,:)`, `A(:,2)`, `A(1:2, 2:3)` — la diferencia es que Python empieza en 0 y el índice final no se incluye.
 
 ## Tuplas
 
@@ -266,6 +341,50 @@ not True         # False
 velocidad > 0.1          # Series de booleanos
 (vel > 0.1) & (dir < 90) # AND elemento a elemento
 ```
+
+## Referencias y copias
+
+En MATLAB, asignar una variable siempre crea una copia independiente:
+
+```matlab
+% MATLAB
+b = a(:, 1:3);   % b es una copia — modificar b no afecta a
+```
+
+En Python, asignar una variable **no copia** los objetos mutables (listas, arrays, DataFrames) — crea una segunda referencia al mismo objeto en memoria:
+
+```python
+a = [1, 2, 3, 4, 5]
+b = a            # b apunta al mismo objeto que a
+b[0] = 99
+print(a)         # [99, 2, 3, 4, 5] — a también cambió
+```
+
+Para obtener una copia real, hay que pedirla explícitamente:
+
+```python
+# Listas
+b = a.copy()
+b = a[:]         # slice completo también copia
+
+# NumPy
+import numpy as np
+A = np.array([[1, 2, 3, 4],
+              [5, 6, 7, 8]])
+
+B = A.copy()            # copia completa — equivalente a b = a en MATLAB
+B = A[:, 0:3].copy()    # equivalente a b = A(:, 1:3) en MATLAB
+
+# Sin .copy(), un slice de NumPy es una vista del original:
+B = A[:, 0:3]    # B comparte memoria con A
+B[0, 0] = 99     # modifica A también
+
+# pandas
+df2 = df.copy()
+```
+
+!!! warning "Vistas en NumPy"
+    Un slice de NumPy sin `.copy()` es una **vista**: ocupa cero memoria extra y cualquier modificación afecta al array original. Útil para eficiencia, pero puede generar bugs si no se tiene en cuenta.
 
 ## Conversión de tipos
 
