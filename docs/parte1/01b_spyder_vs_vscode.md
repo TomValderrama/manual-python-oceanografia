@@ -56,8 +56,6 @@ La diferencia es que en Spyder el código vive en un archivo `.py` limpio, no en
 
 Jupyter tiene ventajas reales para comunicar resultados: mezclar texto explicativo, código y gráficos en un documento que otros pueden leer y re-ejecutar. Es el formato estándar para papers reproducibles y tutoriales. Si el objetivo es compartir un análisis con alguien que no va a modificar el código, un notebook bien hecho es ideal. Si el objetivo es construir un pipeline que procese datos y se mantenga en el tiempo, un script `.py` es mejor.
 
----
-
 ## Comparativa directa
 
 | | Spyder | VSCode |
